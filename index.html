@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitZero - Web Git Client</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23F05133' d='M14.7 5.8l-1.4-1.4c-.2-.2-.4-.3-.7-.3-.2 0-.5.1-.7.3l-1 1 2.1 2.1 1-1c.4-.4.4-1 0-1.4zm-2.8 2.8L3.1 15.5H.5v-2.6l8.9-8.9 2.5 2.6zM2.7 13.9h.8l7.3-7.3-.8-.8-7.3 7.3v.8z'/></svg>">
+    <title>GitZero - Веб-клиент Git</title>
     <style>
         * {
             margin: 0;
@@ -14,25 +13,27 @@
         }
 
         body {
-            background-color: #0d1117;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
             color: #c9d1d9;
-            line-height: 1.5;
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1280px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 16px;
+            padding: 0 20px;
         }
 
         /* Header */
         header {
-            background-color: #161b22;
-            border-bottom: 1px solid #21262d;
+            background: rgba(22, 27, 34, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #30363d;
             padding: 16px 0;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
 
         .header-content {
@@ -44,35 +45,54 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .logo-text {
-            font-size: 20px;
-            font-weight: 700;
-            color: #f0f6fc;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #f05133, #ff7b50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-links {
             display: flex;
-            gap: 24px;
+            gap: 32px;
         }
 
         .nav-link {
             color: #c9d1d9;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-link:hover {
             color: #f0f6fc;
+            background: rgba(88, 166, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: #58a6ff;
+            background: rgba(88, 166, 255, 0.15);
         }
 
         .header-actions {
@@ -82,263 +102,396 @@
         }
 
         .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.2s;
-            border: none;
-        }
-
-        .btn-outline {
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-            background-color: transparent;
-        }
-
-        .btn-outline:hover {
-            background-color: #30363d;
-            border-color: #8b949e;
-        }
-
-        .btn-primary {
-            background-color: #238636;
-            border: 1px solid #238636;
-            color: #ffffff;
-        }
-
-        .btn-primary:hover {
-            background-color: #2ea043;
-            border-color: #3fb950;
-        }
-
-        /* Main Layout */
-        .main-content {
-            display: flex;
-            margin-top: 32px;
-            gap: 32px;
-        }
-
-        .sidebar {
-            width: 250px;
-            flex-shrink: 0;
-        }
-
-        .repo-list {
-            background-color: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 6px;
-            padding: 16px;
-        }
-
-        .repo-item {
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 4px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .repo-item:hover {
-            background-color: #21262d;
+        .btn-outline {
+            border-color: #30363d;
+            color: #c9d1d9;
+            background: transparent;
         }
 
-        .repo-item.active {
-            background-color: #1c6ea0;
+        .btn-outline:hover {
+            border-color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
         }
 
-        .repo-icon {
-            width: 16px;
-            height: 16px;
+        .btn-primary {
+            background: linear-gradient(45deg, #238636, #2ea043);
+            border-color: #238636;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(35, 134, 54, 0.3);
         }
 
-        .content-area {
-            flex: 1;
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #2ea043, #3fb950);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
         }
 
-        .git-interface {
-            background-color: #161b22;
-            border: 1px solid #21262d;
-            border-radius: 6px;
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 60px;
+            text-align: center;
+            position: relative;
             overflow: hidden;
         }
 
-        .git-tabs {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(88, 166, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #f0f6fc, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #8b949e;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
             display: flex;
-            background-color: #21262d;
-            border-bottom: 1px solid #30363d;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        .git-tab {
-            padding: 12px 16px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
+        .btn-large {
+            padding: 16px 32px;
+            font-size: 18px;
+            border-radius: 12px;
         }
 
-        .git-tab.active {
-            border-bottom-color: #f78166;
+        /* Features Grid */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
             color: #f0f6fc;
+            margin-bottom: 60px;
+            position: relative;
         }
 
-        .git-panel {
-            padding: 16px;
-            min-height: 400px;
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, #f05133, #58a6ff);
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(22, 27, 34, 0.8);
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #f05133, #58a6ff);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #58a6ff;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(45deg, #161b22, #21262d);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 16px;
+        }
+
+        .feature-description {
+            color: #8b949e;
+            line-height: 1.6;
+        }
+
+        /* Git Demo Section */
+        .git-demo {
+            padding: 80px 0;
+            background: rgba(13, 17, 23, 0.8);
+            border-radius: 24px;
+            margin: 40px 0;
+            border: 1px solid #30363d;
+        }
+
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f0f6fc;
+            margin-bottom: 16px;
+        }
+
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: #8b949e;
         }
 
         .terminal {
-            background-color: #0d1117;
-            border-radius: 4px;
-            padding: 16px;
-            font-family: 'Courier New', monospace;
+            background: #0d1117;
+            border: 2px solid #21262d;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .terminal-header {
+            background: #21262d;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-button {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .terminal-button.close { background: #ff5f57; }
+        .terminal-button.minimize { background: #ffbd2e; }
+        .terminal-button.maximize { background: #28c940; }
+
+        .terminal-title {
+            color: #8b949e;
             font-size: 14px;
-            height: 300px;
-            overflow-y: auto;
+            flex: 1;
+            text-align: center;
+        }
+
+        .terminal-body {
+            padding: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.8;
+            min-height: 300px;
         }
 
         .terminal-line {
-            margin-bottom: 4px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
 
         .terminal-prompt {
             color: #58a6ff;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         .terminal-command {
-            color: #c9d1d9;
+            color: #f0f6fc;
+            flex: 1;
         }
 
         .terminal-output {
             color: #8b949e;
+            margin-left: 40px;
         }
 
-        .git-form {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
+        .terminal-output.success {
+            color: #3fb950;
         }
 
-        .git-input {
-            flex: 1;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 4px;
-            padding: 8px 12px;
-            color: #c9d1d9;
-        }
-
-        .git-input:focus {
-            outline: none;
-            border-color: #58a6ff;
-        }
-
-        .file-explorer {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 16px;
-        }
-
-        .file-item {
-            background-color: #21262d;
-            border: 1px solid #30363d;
-            border-radius: 4px;
-            padding: 12px;
-            cursor: pointer;
-        }
-
-        .file-item:hover {
-            background-color: #30363d;
-        }
-
-        .file-icon {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 8px;
-        }
-
-        .commit-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .commit-item {
-            background-color: #21262d;
-            border: 1px solid #30363d;
-            border-radius: 4px;
-            padding: 12px;
-        }
-
-        .commit-hash {
-            font-family: 'Courier New', monospace;
-            color: #58a6ff;
-            font-size: 12px;
-        }
-
-        .commit-message {
-            font-weight: 600;
-            margin: 4px 0;
-        }
-
-        .commit-meta {
-            font-size: 12px;
-            color: #8b949e;
-        }
-
-        .hidden {
-            display: none;
+        .terminal-output.error {
+            color: #f85149;
         }
 
         /* Footer */
         footer {
-            border-top: 1px solid #21262d;
-            padding: 40px 0;
-            margin-top: 40px;
+            border-top: 1px solid #30363d;
+            padding: 60px 0 40px;
+            margin-top: 80px;
         }
 
         .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
         }
 
         .footer-logo {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer-text {
+            color: #8b949e;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .footer-heading {
+            color: #f0f6fc;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
         }
 
         .footer-links {
             display: flex;
-            gap: 24px;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .footer-link {
-            color: #58a6ff;
+            color: #8b949e;
             text-decoration: none;
-            font-size: 14px;
+            transition: color 0.3s ease;
         }
 
         .footer-link:hover {
-            text-decoration: underline;
+            color: #58a6ff;
         }
 
-        .copyright {
+        .footer-bottom {
+            border-top: 1px solid #30363d;
+            padding-top: 30px;
+            margin-top: 40px;
+            text-align: center;
             color: #8b949e;
-            font-size: 14px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
             }
             
-            .sidebar {
-                width: 100%;
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
         }
     </style>
@@ -348,317 +501,297 @@
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo">
-                    <svg class="logo-icon" viewBox="0 0 16 16" fill="#F05133">
-                        <path d="M14.7 5.8l-1.4-1.4c-.2-.2-.4-.3-.7-.3-.2 0-.5.1-.7.3l-1 1 2.1 2.1 1-1c.4-.4.4-1 0-1.4zm-2.8 2.8L3.1 15.5H.5v-2.6l8.9-8.9 2.5 2.6zM2.7 13.9h.8l7.3-7.3-.8-.8-7.3 7.3v.8z"/>
+                    <svg class="logo-icon" viewBox="0 0 32 32" fill="url(#gitGradient)">
+                        <defs>
+                            <linearGradient id="gitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#F05133"/>
+                                <stop offset="100%" stop-color="#FF7B50"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="url(#gitGradient)"/>
+                        <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
                     </svg>
                     <span class="logo-text">GitZero</span>
                 </a>
                 
                 <div class="nav-links">
-                    <a href="#" class="nav-link">Репозитории</a>
-                    <a href="#" class="nav-link">Коммиты</a>
-                    <a href="#" class="nav-link">Ветки</a>
+                    <a href="#" class="nav-link active">Главная</a>
                     <a href="#" class="nav-link">Документация</a>
+                    <a href="#" class="nav-link">Примеры</a>
+                    <a href="#" class="nav-link">Сообщество</a>
+                    <a href="#" class="nav-link">Блог</a>
                 </div>
                 
                 <div class="header-actions">
-                    <button class="btn btn-outline" id="loginBtn">Войти</button>
-                    <button class="btn btn-primary" id="signupBtn">Регистрация</button>
+                    <button class="btn btn-outline">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14.5a6.5 6.5 0 110-13 6.5 6.5 0 010 13zM5 8a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"/>
+                        </svg>
+                        Войти
+                    </button>
+                    <button class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14.5a6.5 6.5 0 110-13 6.5 6.5 0 010 13zM5 8a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"/>
+                        </svg>
+                        Начать бесплатно
+                    </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <div class="main-content">
-            <div class="sidebar">
-                <div class="repo-list">
-                    <h3 style="margin-bottom: 12px; color: #f0f6fc;">Репозитории</h3>
-                    <div class="repo-item active" data-repo="zero-core">
-                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
-                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Git в вашем браузере</h1>
+                <p>Мощный веб-интерфейс для работы с Git репозиториями. Управляйте вашими проектами прямо в браузере с помощью знакомых команд.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-large">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                         </svg>
-                        zero-core
-                    </div>
-                    <div class="repo-item" data-repo="zero-ui">
-                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
-                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
-                        </svg>
-                        zero-ui
-                    </div>
-                    <div class="repo-item" data-repo="zero-cli">
-                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
-                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
-                        </svg>
-                        zero-cli
-                    </div>
-                    <div class="repo-item" data-repo="docs">
-                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
-                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
-                        </svg>
-                        docs
-                    </div>
+                        Создать репозиторий
+                    </button>
+                    <button class="btn btn-outline btn-large">
+                        📚 Изучить документацию
+                    </button>
                 </div>
             </div>
-            
-            <div class="content-area">
-                <div class="git-interface">
-                    <div class="git-tabs">
-                        <div class="git-tab active" data-tab="terminal">Терминал</div>
-                        <div class="git-tab" data-tab="files">Файлы</div>
-                        <div class="git-tab" data-tab="commits">Коммиты</div>
-                        <div class="git-tab" data-tab="branches">Ветки</div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Возможности GitZero</h2>
+            <div class="features-grid">
+                <div class="feature-card floating">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Быстрые операции</h3>
+                    <p class="feature-description">Оптимизированные алгоритмы для мгновенного выполнения Git команд даже с большими репозиториями.</p>
+                </div>
+                
+                <div class="feature-card floating" style="animation-delay: 0.2s;">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Безопасность</h3>
+                    <p class="feature-description">Шифрование данных и безопасное хранение ключей. Полный контроль над доступом к репозиториям.</p>
+                </div>
+                
+                <div class="feature-card floating" style="animation-delay: 0.4s;">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Доступность</h3>
+                    <p class="feature-description">Работайте с вашими репозиториями из любого места. Не требует установки дополнительного ПО.</p>
+                </div>
+                
+                <div class="feature-card floating" style="animation-delay: 0.6s;">
+                    <div class="feature-icon">🤝</div>
+                    <h3 class="feature-title">Совместная работа</h3>
+                    <p class="feature-description">Встроенные инструменты для code review, issue tracking и управления проектами.</p>
+                </div>
+                
+                <div class="feature-card floating" style="animation-delay: 0.8s;">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Аналитика</h3>
+                    <p class="feature-description">Детальная статистика по коммитам, веткам и активности разработчиков.</p>
+                </div>
+                
+                <div class="feature-card floating" style="animation-delay: 1s;">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">CI/CD</h3>
+                    <p class="feature-description">Интеграция с системами непрерывной интеграции и доставки.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="git-demo">
+        <div class="container">
+            <div class="demo-container">
+                <div class="demo-header">
+                    <h2 class="demo-title">Попробуйте GitZero прямо сейчас</h2>
+                    <p class="demo-subtitle">Введите Git команды и увидите результат в реальном времени</p>
+                </div>
+                
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <div class="terminal-button close"></div>
+                            <div class="terminal-button minimize"></div>
+                            <div class="terminal-button maximize"></div>
+                        </div>
+                        <div class="terminal-title">terminal — gitzero@web — 80×24</div>
                     </div>
-                    
-                    <div class="git-panel">
-                        <!-- Terminal Tab -->
-                        <div id="terminal-tab">
-                            <div class="terminal" id="terminal-output">
-                                <div class="terminal-line">
-                                    <span class="terminal-prompt">gitzero@web:</span>
-                                    <span class="terminal-command">git status</span>
-                                </div>
-                                <div class="terminal-line terminal-output">
-                                    На ветке main
-                                </div>
-                                <div class="terminal-line terminal-output">
-                                    Ваша ветка обновлена в соответствии с 'origin/main'.
-                                </div>
-                                <div class="terminal-line terminal-output">
-                                    <br>
-                                </div>
-                                <div class="terminal-line terminal-output">
-                                    Нечего коммитить, чистый рабочий каталог
-                                </div>
-                                <div class="terminal-line">
-                                    <span class="terminal-prompt">gitzero@web:</span>
-                                    <span class="terminal-command" id="current-command"></span>
-                                </div>
-                            </div>
-                            <div class="git-form">
-                                <input type="text" class="git-input" id="git-command" placeholder="Введите git команду (git status, git log, git add и т.д.)">
-                                <button class="btn btn-primary" id="execute-btn">Выполнить</button>
-                            </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">gitzero@web:~$</span>
+                            <span class="terminal-command">git --version</span>
+                        </div>
+                        <div class="terminal-output success">git version 2.39.1.gitzero</div>
+                        
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">gitzero@web:~$</span>
+                            <span class="terminal-command">git init my-project</span>
+                        </div>
+                        <div class="terminal-output success">Initialized empty Git repository in /home/gitzero/my-project/.git/</div>
+                        
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">gitzero@web:~$</span>
+                            <span class="terminal-command">cd my-project</span>
                         </div>
                         
-                        <!-- Files Tab -->
-                        <div id="files-tab" class="hidden">
-                            <h3 style="margin-bottom: 16px;">Файлы репозитория</h3>
-                            <div class="file-explorer">
-                                <div class="file-item">
-                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
-                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
-                                    </svg>
-                                    README.md
-                                </div>
-                                <div class="file-item">
-                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
-                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
-                                    </svg>
-                                    package.json
-                                </div>
-                                <div class="file-item">
-                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
-                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
-                                    </svg>
-                                    index.js
-                                </div>
-                                <div class="file-item">
-                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
-                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
-                                    </svg>
-                                    styles.css
-                                </div>
-                                <div class="file-item">
-                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
-                                        <path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.82l-.65-1.125A1.75 1.75 0 005.655 1H1.75zM1.5 2.75a.25.25 0 01.25-.25h3.905a.25.25 0 01.216.125L7.354 4.5H14.25a.25.25 0 01.25.25v8.5a.25.25 0 01-.25.25H1.75a.25.25 0 01-.25-.25V2.75z"/>
-                                    </svg>
-                                    src/
-                                </div>
-                                <div class="file-item">
-                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
-                                        <path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.82l-.65-1.125A1.75 1.75 0 005.655 1H1.75zM1.5 2.75a.25.25 0 01.25-.25h3.905a.25.25 0 01.216.125L7.354 4.5H14.25a.25.25 0 01.25.25v8.5a.25.25 0 01-.25.25H1.75a.25.25 0 01-.25-.25V2.75z"/>
-                                    </svg>
-                                    public/
-                                </div>
-                            </div>
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">gitzero@web:~/my-project$</span>
+                            <span class="terminal-command">git status</span>
                         </div>
+                        <div class="terminal-output">На ветке main</div>
+                        <div class="terminal-output">Еще нет коммитов</div>
+                        <div class="terminal-output">Нечего коммитить (создайте/скопируйте файлы и используйте "git add" для отслеживания)</div>
                         
-                        <!-- Commits Tab -->
-                        <div id="commits-tab" class="hidden">
-                            <h3 style="margin-bottom: 16px;">История коммитов</h3>
-                            <div class="commit-list">
-                                <div class="commit-item">
-                                    <div class="commit-hash">a1b2c3d</div>
-                                    <div class="commit-message">Добавлена функция экспорта</div>
-                                    <div class="commit-meta">Автор: developer &lt;dev@example.com&gt;, 2 дня назад</div>
-                                </div>
-                                <div class="commit-item">
-                                    <div class="commit-hash">e4f5g6h</div>
-                                    <div class="commit-message">Исправлена ошибка в обработке JSON</div>
-                                    <div class="commit-meta">Автор: developer &lt;dev@example.com&gt;, 4 дня назад</div>
-                                </div>
-                                <div class="commit-item">
-                                    <div class="commit-hash">i7j8k9l</div>
-                                    <div class="commit-message">Обновлена документация</div>
-                                    <div class="commit-meta">Автор: contributor &lt;contrib@example.com&gt;, 1 неделю назад</div>
-                                </div>
-                                <div class="commit-item">
-                                    <div class="commit-hash">m1n2o3p</div>
-                                    <div class="commit-message">Первоначальный коммит</div>
-                                    <div class="commit-meta">Автор: admin &lt;admin@example.com&gt;, 2 недели назад</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Branches Tab -->
-                        <div id="branches-tab" class="hidden">
-                            <h3 style="margin-bottom: 16px;">Ветки репозитория</h3>
-                            <div class="commit-list">
-                                <div class="commit-item">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <div style="font-weight: 600;">main</div>
-                                            <div class="commit-meta">Последний коммит: a1b2c3d - Добавлена функция экспорта</div>
-                                        </div>
-                                        <span style="background-color: #238636; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px;">текущая</span>
-                                    </div>
-                                </div>
-                                <div class="commit-item">
-                                    <div>
-                                        <div style="font-weight: 600;">develop</div>
-                                        <div class="commit-meta">Последний коммит: x9y8z7w - Добавлены тесты для нового API</div>
-                                    </div>
-                                </div>
-                                <div class="commit-item">
-                                    <div>
-                                        <div style="font-weight: 600;">feature/export</div>
-                                        <div class="commit-meta">Последний коммит: q1w2e3r - Добавлена поддержка CSV формата</div>
-                                    </div>
-                                </div>
-                                <div class="commit-item">
-                                    <div>
-                                        <div style="font-weight: 600;">hotfix/login</div>
-                                        <div class="commit-meta">Последний коммит: t6y7u8i - Исправлена ошибка аутентификации</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="terminal-line">
+                            <span class="terminal-prompt">gitzero@web:~/my-project$</span>
+                            <span class="terminal-command" id="current-command"></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <svg class="logo-icon" width="24" height="24" viewBox="0 0 16 16" fill="#F05133">
-                        <path d="M14.7 5.8l-1.4-1.4c-.2-.2-.4-.3-.7-.3-.2 0-.5.1-.7.3l-1 1 2.1 2.1 1-1c.4-.4.4-1 0-1.4zm-2.8 2.8L3.1 15.5H.5v-2.6l8.9-8.9 2.5 2.6zM2.7 13.9h.8l7.3-7.3-.8-.8-7.3 7.3v.8z"/>
-                    </svg>
-                    <span class="logo-text">GitZero</span>
+                <div>
+                    <div class="footer-logo">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="#F05133">
+                            <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
+                            <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
+                        </svg>
+                        <span class="logo-text">GitZero</span>
+                    </div>
+                    <p class="footer-text">
+                        Современная платформа для управления Git репозиториями прямо в браузере. 
+                        Бесплатно для открытых проектов, с расширенными возможностями для команд.
+                    </p>
                 </div>
                 
-                <div class="footer-links">
-                    <a href="#" class="footer-link">Документация</a>
-                    <a href="#" class="footer-link">API</a>
-                    <a href="#" class="footer-link">Поддержка</a>
+                <div>
+                    <h3 class="footer-heading">Продукт</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Возможности</a>
+                        <a href="#" class="footer-link">Безопасность</a>
+                        <a href="#" class="footer-link">Цены</a>
+                        <a href="#" class="footer-link">Команда</a>
+                        <a href="#" class="footer-link">Предприятие</a>
+                    </div>
                 </div>
                 
-                <div class="copyright">
-                    © 2023 GitZero. Веб-интерфейс для Git.
+                <div>
+                    <h3 class="footer-heading">Поддержка</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Помощь</a>
+                        <a href="#" class="footer-link">Сообщество</a>
+                        <a href="#" class="footer-link">Статус</a>
+                        <a href="#" class="footer-link">Контакты</a>
+                        <a href="#" class="footer-link">API</a>
+                    </div>
                 </div>
+                
+                <div>
+                    <h3 class="footer-heading">Компания</h3>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">О нас</a>
+                        <a href="#" class="footer-link">Блог</a>
+                        <a href="#" class="footer-link">Карьера</a>
+                        <a href="#" class="footer-link">Пресса</a>
+                        <a href="#" class="footer-link">Социальные сети</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 GitZero. Сделано с ❤️ для разработчиков по всему миру.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Tab switching
-        document.querySelectorAll('.git-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active class from all tabs
-                document.querySelectorAll('.git-tab').forEach(t => t.classList.remove('active'));
-                // Hide all panels
-                document.querySelectorAll('.git-panel > div').forEach(panel => panel.classList.add('hidden'));
-                
-                // Activate clicked tab
-                tab.classList.add('active');
-                // Show corresponding panel
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(`${tabId}-tab`).classList.remove('hidden');
-            });
-        });
-
-        // Repository switching
-        document.querySelectorAll('.repo-item').forEach(repo => {
-            repo.addEventListener('click', () => {
-                document.querySelectorAll('.repo-item').forEach(r => r.classList.remove('active'));
-                repo.classList.add('active');
-                
-                // In a real app, this would load the selected repository
-                const repoName = repo.getAttribute('data-repo');
-                document.getElementById('current-command').textContent = `cd ${repoName}`;
-            });
-        });
-
-        // Git command execution
-        document.getElementById('execute-btn').addEventListener('click', executeCommand);
-        document.getElementById('git-command').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') executeCommand();
-        });
-
-        function executeCommand() {
-            const commandInput = document.getElementById('git-command');
-            const command = commandInput.value.trim();
-            
-            if (!command) return;
-            
-            const terminal = document.getElementById('terminal-output');
-            const currentLine = terminal.querySelector('.terminal-line:last-child');
-            
-            // Add the command to terminal
-            const commandLine = document.createElement('div');
-            commandLine.className = 'terminal-line';
-            commandLine.innerHTML = `<span class="terminal-prompt">gitzero@web:</span> <span class="terminal-command">${command}</span>`;
-            terminal.insertBefore(commandLine, currentLine);
-            
-            // Process the command and show output
-            const output = processGitCommand(command);
-            if (output) {
-                const outputLine = document.createElement('div');
-                outputLine.className = 'terminal-line terminal-output';
-                outputLine.innerHTML = output;
-                terminal.insertBefore(outputLine, currentLine);
-            }
-            
-            // Clear input and scroll to bottom
-            commandInput.value = '';
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        function processGitCommand(command) {
-            const cmd = command.toLowerCase();
-            
-            if (cmd === 'git status') {
-                return `На ветке main<br>Ваша ветка обновлена в соответствии с 'origin/main'.<br><br>Нечего коммитить, чистый рабочий каталог`;
-            } else if (cmd === 'git log') {
-                return `commit a1b2c3d (HEAD -> main)<br>Author: developer &lt;dev@example.com&gt;<br>Date: 2 дня назад<br><br>    Добавлена функция экспорта<br><br>commit e4f5g6h<br>Author: developer &lt;dev@example.com&gt;<br>Date: 4 дня назад<br><br>    Исправлена ошибка в обработке JSON`;
-            } else if (cmd === 'git branch') {
-                return `* main<br>  develop<br>  feature/export<br>  hotfix/login`;
-            } else if (cmd.startsWith('git add')) {
-                return `Добавлены файлы в индекс`;
-            } else if (cmd.startsWith('git commit')) {
-                return `[main a1b2c3d] Новый коммит<br> 1 file changed, 15 insertions(+)`;
-            } else if (cmd === 'git help') {
-                return `Доступные команды: git status, git log, git branch, git add, git commit`;
-            } else {
-                return `Команда '${command}' не распознана. Введите 'git help' для списка доступных команд.`;
+        // Анимация ввода команд в терминале
+        const commands = [
+            'echo "Hello, GitZero!" > README.md',
+            'git add README.md',
+            'git commit -m "Initial commit"',
+            'git log --oneline'
+        ];
+        
+        let currentCommand = 0;
+        let currentChar = 0;
+        const commandElement = document.getElementById('current-command');
+        
+        function typeCommand() {
+            if (currentCommand < commands.length) {
+                if (currentChar < commands[currentCommand].length) {
+                    commandElement.textContent += commands[currentCommand][currentChar];
+                    currentChar++;
+                    setTimeout(typeCommand, 50);
+                } else {
+                    setTimeout(() => {
+                        // Добавляем вывод команды
+                        const terminalBody = document.querySelector('.terminal-body');
+                        const newLine = document.createElement('div');
+                        newLine.className = 'terminal-line';
+                        newLine.innerHTML = `<span class="terminal-prompt">gitzero@web:~/my-project$</span> <span class="terminal-command">${commands[currentCommand]}</span>`;
+                        terminalBody.insertBefore(newLine, commandElement.parentNode);
+                        
+                        // Добавляем вывод
+                        const output = document.createElement('div');
+                        output.className = 'terminal-output success';
+                        
+                        switch(currentCommand) {
+                            case 0:
+                                output.textContent = '';
+                                break;
+                            case 1:
+                                output.textContent = '';
+                                break;
+                            case 2:
+                                output.textContent = '[main (root-commit) a1b2c3d] Initial commit';
+                                break;
+                            case 3:
+                                output.innerHTML = 'a1b2c3d Initial commit';
+                                break;
+                        }
+                        
+                        if (output.textContent) {
+                            terminalBody.insertBefore(output, commandElement.parentNode);
+                        }
+                        
+                        // Очищаем текущую команду и переходим к следующей
+                        commandElement.textContent = '';
+                        currentCommand++;
+                        currentChar = 0;
+                        
+                        // Прокручиваем вниз
+                        terminalBody.scrollTop = terminalBody.scrollHeight;
+                        
+                        if (currentCommand < commands.length) {
+                            setTimeout(typeCommand, 1000);
+                        }
+                    }, 1000);
+                }
             }
         }
-
-        // Initialize
-        document.getElementById('current-command').textContent = 'cd zero-core';
+        
+        // Запускаем анимацию после загрузки страницы
+        setTimeout(typeCommand, 2000);
+        
+        // Добавляем интерактивность кнопкам
+        document.querySelectorAll('.btn-primary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
     </script>
 </body>
 </html>

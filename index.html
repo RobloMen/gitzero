@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitZero - Web Git Client</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='%23F05133' d='M14.7 5.8l-1.4-1.4c-.2-.2-.4-.3-.7-.3-.2 0-.5.1-.7.3l-1 1 2.1 2.1 1-1c.4-.4.4-1 0-1.4zm-2.8 2.8L3.1 15.5H.5v-2.6l8.9-8.9 2.5 2.6zM2.7 13.9h.8l7.3-7.3-.8-.8-7.3 7.3v.8z'/></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Header */
+        header {
+            background-color: #161b22;
+            border-bottom: 1px solid #21262d;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f0f6fc;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            color: #f0f6fc;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-outline {
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            background-color: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: #30363d;
+            border-color: #8b949e;
+        }
+
+        .btn-primary {
+            background-color: #238636;
+            border: 1px solid #238636;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2ea043;
+            border-color: #3fb950;
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: flex;
+            margin-top: 32px;
+            gap: 32px;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .repo-list {
+            background-color: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .repo-item {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .repo-item:hover {
+            background-color: #21262d;
+        }
+
+        .repo-item.active {
+            background-color: #1c6ea0;
+        }
+
+        .repo-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .content-area {
+            flex: 1;
+        }
+
+        .git-interface {
+            background-color: #161b22;
+            border: 1px solid #21262d;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .git-tabs {
+            display: flex;
+            background-color: #21262d;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .git-tab {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .git-tab.active {
+            border-bottom-color: #f78166;
+            color: #f0f6fc;
+        }
+
+        .git-panel {
+            padding: 16px;
+            min-height: 400px;
+        }
+
+        .terminal {
+            background-color: #0d1117;
+            border-radius: 4px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 4px;
+        }
+
+        .terminal-prompt {
+            color: #58a6ff;
+        }
+
+        .terminal-command {
+            color: #c9d1d9;
+        }
+
+        .terminal-output {
+            color: #8b949e;
+        }
+
+        .git-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .git-input {
+            flex: 1;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: #c9d1d9;
+        }
+
+        .git-input:focus {
+            outline: none;
+            border-color: #58a6ff;
+        }
+
+        .file-explorer {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .file-item {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        .file-item:hover {
+            background-color: #30363d;
+        }
+
+        .file-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 8px;
+        }
+
+        .commit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .commit-item {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 12px;
+        }
+
+        .commit-hash {
+            font-family: 'Courier New', monospace;
+            color: #58a6ff;
+            font-size: 12px;
+        }
+
+        .commit-message {
+            font-weight: 600;
+            margin: 4px 0;
+        }
+
+        .commit-meta {
+            font-size: 12px;
+            color: #8b949e;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #21262d;
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-link {
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        .copyright {
+            color: #8b949e;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <svg class="logo-icon" viewBox="0 0 16 16" fill="#F05133">
+                        <path d="M14.7 5.8l-1.4-1.4c-.2-.2-.4-.3-.7-.3-.2 0-.5.1-.7.3l-1 1 2.1 2.1 1-1c.4-.4.4-1 0-1.4zm-2.8 2.8L3.1 15.5H.5v-2.6l8.9-8.9 2.5 2.6zM2.7 13.9h.8l7.3-7.3-.8-.8-7.3 7.3v.8z"/>
+                    </svg>
+                    <span class="logo-text">GitZero</span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="#" class="nav-link">Репозитории</a>
+                    <a href="#" class="nav-link">Коммиты</a>
+                    <a href="#" class="nav-link">Ветки</a>
+                    <a href="#" class="nav-link">Документация</a>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-outline" id="loginBtn">Войти</button>
+                    <button class="btn btn-primary" id="signupBtn">Регистрация</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="sidebar">
+                <div class="repo-list">
+                    <h3 style="margin-bottom: 12px; color: #f0f6fc;">Репозитории</h3>
+                    <div class="repo-item active" data-repo="zero-core">
+                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
+                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+                        </svg>
+                        zero-core
+                    </div>
+                    <div class="repo-item" data-repo="zero-ui">
+                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
+                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+                        </svg>
+                        zero-ui
+                    </div>
+                    <div class="repo-item" data-repo="zero-cli">
+                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
+                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+                        </svg>
+                        zero-cli
+                    </div>
+                    <div class="repo-item" data-repo="docs">
+                        <svg class="repo-icon" viewBox="0 0 16 16" fill="#8b949e">
+                            <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+                        </svg>
+                        docs
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-area">
+                <div class="git-interface">
+                    <div class="git-tabs">
+                        <div class="git-tab active" data-tab="terminal">Терминал</div>
+                        <div class="git-tab" data-tab="files">Файлы</div>
+                        <div class="git-tab" data-tab="commits">Коммиты</div>
+                        <div class="git-tab" data-tab="branches">Ветки</div>
+                    </div>
+                    
+                    <div class="git-panel">
+                        <!-- Terminal Tab -->
+                        <div id="terminal-tab">
+                            <div class="terminal" id="terminal-output">
+                                <div class="terminal-line">
+                                    <span class="terminal-prompt">gitzero@web:</span>
+                                    <span class="terminal-command">git status</span>
+                                </div>
+                                <div class="terminal-line terminal-output">
+                                    На ветке main
+                                </div>
+                                <div class="terminal-line terminal-output">
+                                    Ваша ветка обновлена в соответствии с 'origin/main'.
+                                </div>
+                                <div class="terminal-line terminal-output">
+                                    <br>
+                                </div>
+                                <div class="terminal-line terminal-output">
+                                    Нечего коммитить, чистый рабочий каталог
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="terminal-prompt">gitzero@web:</span>
+                                    <span class="terminal-command" id="current-command"></span>
+                                </div>
+                            </div>
+                            <div class="git-form">
+                                <input type="text" class="git-input" id="git-command" placeholder="Введите git команду (git status, git log, git add и т.д.)">
+                                <button class="btn btn-primary" id="execute-btn">Выполнить</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Files Tab -->
+                        <div id="files-tab" class="hidden">
+                            <h3 style="margin-bottom: 16px;">Файлы репозитория</h3>
+                            <div class="file-explorer">
+                                <div class="file-item">
+                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
+                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
+                                    </svg>
+                                    README.md
+                                </div>
+                                <div class="file-item">
+                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
+                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
+                                    </svg>
+                                    package.json
+                                </div>
+                                <div class="file-item">
+                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
+                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
+                                    </svg>
+                                    index.js
+                                </div>
+                                <div class="file-item">
+                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
+                                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
+                                    </svg>
+                                    styles.css
+                                </div>
+                                <div class="file-item">
+                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
+                                        <path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.82l-.65-1.125A1.75 1.75 0 005.655 1H1.75zM1.5 2.75a.25.25 0 01.25-.25h3.905a.25.25 0 01.216.125L7.354 4.5H14.25a.25.25 0 01.25.25v8.5a.25.25 0 01-.25.25H1.75a.25.25 0 01-.25-.25V2.75z"/>
+                                    </svg>
+                                    src/
+                                </div>
+                                <div class="file-item">
+                                    <svg class="file-icon" viewBox="0 0 16 16" fill="#8b949e">
+                                        <path fill-rule="evenodd" d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.82l-.65-1.125A1.75 1.75 0 005.655 1H1.75zM1.5 2.75a.25.25 0 01.25-.25h3.905a.25.25 0 01.216.125L7.354 4.5H14.25a.25.25 0 01.25.25v8.5a.25.25 0 01-.25.25H1.75a.25.25 0 01-.25-.25V2.75z"/>
+                                    </svg>
+                                    public/
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Commits Tab -->
+                        <div id="commits-tab" class="hidden">
+                            <h3 style="margin-bottom: 16px;">История коммитов</h3>
+                            <div class="commit-list">
+                                <div class="commit-item">
+                                    <div class="commit-hash">a1b2c3d</div>
+                                    <div class="commit-message">Добавлена функция экспорта</div>
+                                    <div class="commit-meta">Автор: developer &lt;dev@example.com&gt;, 2 дня назад</div>
+                                </div>
+                                <div class="commit-item">
+                                    <div class="commit-hash">e4f5g6h</div>
+                                    <div class="commit-message">Исправлена ошибка в обработке JSON</div>
+                                    <div class="commit-meta">Автор: developer &lt;dev@example.com&gt;, 4 дня назад</div>
+                                </div>
+                                <div class="commit-item">
+                                    <div class="commit-hash">i7j8k9l</div>
+                                    <div class="commit-message">Обновлена документация</div>
+                                    <div class="commit-meta">Автор: contributor &lt;contrib@example.com&gt;, 1 неделю назад</div>
+                                </div>
+                                <div class="commit-item">
+                                    <div class="commit-hash">m1n2o3p</div>
+                                    <div class="commit-message">Первоначальный коммит</div>
+                                    <div class="commit-meta">Автор: admin &lt;admin@example.com&gt;, 2 недели назад</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Branches Tab -->
+                        <div id="branches-tab" class="hidden">
+                            <h3 style="margin-bottom: 16px;">Ветки репозитория</h3>
+                            <div class="commit-list">
+                                <div class="commit-item">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <div style="font-weight: 600;">main</div>
+                                            <div class="commit-meta">Последний коммит: a1b2c3d - Добавлена функция экспорта</div>
+                                        </div>
+                                        <span style="background-color: #238636; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px;">текущая</span>
+                                    </div>
+                                </div>
+                                <div class="commit-item">
+                                    <div>
+                                        <div style="font-weight: 600;">develop</div>
+                                        <div class="commit-meta">Последний коммит: x9y8z7w - Добавлены тесты для нового API</div>
+                                    </div>
+                                </div>
+                                <div class="commit-item">
+                                    <div>
+                                        <div style="font-weight: 600;">feature/export</div>
+                                        <div class="commit-meta">Последний коммит: q1w2e3r - Добавлена поддержка CSV формата</div>
+                                    </div>
+                                </div>
+                                <div class="commit-item">
+                                    <div>
+                                        <div style="font-weight: 600;">hotfix/login</div>
+                                        <div class="commit-meta">Последний коммит: t6y7u8i - Исправлена ошибка аутентификации</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg class="logo-icon" width="24" height="24" viewBox="0 0 16 16" fill="#F05133">
+                        <path d="M14.7 5.8l-1.4-1.4c-.2-.2-.4-.3-.7-.3-.2 0-.5.1-.7.3l-1 1 2.1 2.1 1-1c.4-.4.4-1 0-1.4zm-2.8 2.8L3.1 15.5H.5v-2.6l8.9-8.9 2.5 2.6zM2.7 13.9h.8l7.3-7.3-.8-.8-7.3 7.3v.8z"/>
+                    </svg>
+                    <span class="logo-text">GitZero</span>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Документация</a>
+                    <a href="#" class="footer-link">API</a>
+                    <a href="#" class="footer-link">Поддержка</a>
+                </div>
+                
+                <div class="copyright">
+                    © 2023 GitZero. Веб-интерфейс для Git.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.git-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.git-tab').forEach(t => t.classList.remove('active'));
+                // Hide all panels
+                document.querySelectorAll('.git-panel > div').forEach(panel => panel.classList.add('hidden'));
+                
+                // Activate clicked tab
+                tab.classList.add('active');
+                // Show corresponding panel
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+            });
+        });
+
+        // Repository switching
+        document.querySelectorAll('.repo-item').forEach(repo => {
+            repo.addEventListener('click', () => {
+                document.querySelectorAll('.repo-item').forEach(r => r.classList.remove('active'));
+                repo.classList.add('active');
+                
+                // In a real app, this would load the selected repository
+                const repoName = repo.getAttribute('data-repo');
+                document.getElementById('current-command').textContent = `cd ${repoName}`;
+            });
+        });
+
+        // Git command execution
+        document.getElementById('execute-btn').addEventListener('click', executeCommand);
+        document.getElementById('git-command').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') executeCommand();
+        });
+
+        function executeCommand() {
+            const commandInput = document.getElementById('git-command');
+            const command = commandInput.value.trim();
+            
+            if (!command) return;
+            
+            const terminal = document.getElementById('terminal-output');
+            const currentLine = terminal.querySelector('.terminal-line:last-child');
+            
+            // Add the command to terminal
+            const commandLine = document.createElement('div');
+            commandLine.className = 'terminal-line';
+            commandLine.innerHTML = `<span class="terminal-prompt">gitzero@web:</span> <span class="terminal-command">${command}</span>`;
+            terminal.insertBefore(commandLine, currentLine);
+            
+            // Process the command and show output
+            const output = processGitCommand(command);
+            if (output) {
+                const outputLine = document.createElement('div');
+                outputLine.className = 'terminal-line terminal-output';
+                outputLine.innerHTML = output;
+                terminal.insertBefore(outputLine, currentLine);
+            }
+            
+            // Clear input and scroll to bottom
+            commandInput.value = '';
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function processGitCommand(command) {
+            const cmd = command.toLowerCase();
+            
+            if (cmd === 'git status') {
+                return `На ветке main<br>Ваша ветка обновлена в соответствии с 'origin/main'.<br><br>Нечего коммитить, чистый рабочий каталог`;
+            } else if (cmd === 'git log') {
+                return `commit a1b2c3d (HEAD -> main)<br>Author: developer &lt;dev@example.com&gt;<br>Date: 2 дня назад<br><br>    Добавлена функция экспорта<br><br>commit e4f5g6h<br>Author: developer &lt;dev@example.com&gt;<br>Date: 4 дня назад<br><br>    Исправлена ошибка в обработке JSON`;
+            } else if (cmd === 'git branch') {
+                return `* main<br>  develop<br>  feature/export<br>  hotfix/login`;
+            } else if (cmd.startsWith('git add')) {
+                return `Добавлены файлы в индекс`;
+            } else if (cmd.startsWith('git commit')) {
+                return `[main a1b2c3d] Новый коммит<br> 1 file changed, 15 insertions(+)`;
+            } else if (cmd === 'git help') {
+                return `Доступные команды: git status, git log, git branch, git add, git commit`;
+            } else {
+                return `Команда '${command}' не распознана. Введите 'git help' для списка доступных команд.`;
+            }
+        }
+
+        // Initialize
+        document.getElementById('current-command').textContent = 'cd zero-core';
+    </script>
+</body>
+</html>

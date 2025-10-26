@@ -12,9 +12,23 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
         }
 
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --success: #3fb950;
+            --danger: #f85149;
+            --warning: #d29922;
+        }
+
         body {
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-            color: #c9d1d9;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
             line-height: 1.6;
             min-height: 100vh;
         }
@@ -27,9 +41,8 @@
 
         /* Header */
         header {
-            background: rgba(22, 27, 34, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid #30363d;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
             padding: 16px 0;
             position: sticky;
             top: 0;
@@ -71,33 +84,27 @@
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 24px;
         }
 
         .nav-link {
-            color: #c9d1d9;
+            color: var(--text-secondary);
             text-decoration: none;
             font-size: 16px;
             font-weight: 600;
             padding: 8px 16px;
             border-radius: 6px;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        .nav-link:hover {
-            color: #f0f6fc;
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent);
             background: rgba(88, 166, 255, 0.1);
-        }
-
-        .nav-link.active {
-            color: #58a6ff;
-            background: rgba(88, 166, 255, 0.15);
         }
 
         .header-actions {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             align-items: center;
         }
 
@@ -116,13 +123,13 @@
         }
 
         .btn-outline {
-            border-color: #30363d;
-            color: #c9d1d9;
+            border-color: var(--border);
+            color: var(--text-secondary);
             background: transparent;
         }
 
         .btn-outline:hover {
-            border-color: #58a6ff;
+            border-color: var(--accent);
             background: rgba(88, 166, 255, 0.1);
         }
 
@@ -139,359 +146,458 @@
             box-shadow: 0 6px 20px rgba(35, 134, 54, 0.4);
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 100px 0 60px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        .btn-danger {
+            background: var(--danger);
+            color: white;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(88, 166, 255, 0.1) 0%, transparent 70%);
-            pointer-events: none;
+        .btn-danger:hover {
+            background: #da3633;
         }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #f0f6fc, #58a6ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 24px;
-            line-height: 1.1;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            color: #8b949e;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-large {
-            padding: 16px 32px;
-            font-size: 18px;
-            border-radius: 12px;
-        }
-
-        /* Features Grid */
-        .features {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            font-weight: 700;
-            color: #f0f6fc;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(45deg, #f05133, #58a6ff);
-            margin: 20px auto 0;
-            border-radius: 2px;
-        }
-
-        .features-grid {
+        /* Main Layout */
+        .main-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+            padding: 24px 0;
+            min-height: calc(100vh - 120px);
         }
 
-        .feature-card {
-            background: rgba(22, 27, 34, 0.8);
-            border: 1px solid #30363d;
-            border-radius: 16px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+        .sidebar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(45deg, #f05133, #58a6ff);
+        .sidebar-section {
+            margin-bottom: 24px;
         }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: #58a6ff;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px;
-            background: linear-gradient(45deg, #161b22, #21262d);
-            border-radius: 20px;
+        .repo-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .repo-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--text-secondary);
         }
 
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #f0f6fc;
-            margin-bottom: 16px;
+        .repo-item:hover {
+            background: var(--bg-tertiary);
         }
 
-        .feature-description {
-            color: #8b949e;
-            line-height: 1.6;
+        .repo-item.active {
+            background: var(--accent);
+            color: white;
         }
 
-        /* Git Demo Section */
-        .git-demo {
-            padding: 80px 0;
-            background: rgba(13, 17, 23, 0.8);
-            border-radius: 24px;
-            margin: 40px 0;
-            border: 1px solid #30363d;
+        .repo-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
         }
 
-        .demo-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
-        .demo-header {
-            text-align: center;
-            margin-bottom: 40px;
+        /* Repository Header */
+        .repo-header {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
         }
 
-        .demo-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #f0f6fc;
-            margin-bottom: 16px;
-        }
-
-        .demo-subtitle {
-            font-size: 1.2rem;
-            color: #8b949e;
-        }
-
-        .terminal {
-            background: #0d1117;
-            border: 2px solid #21262d;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .terminal-header {
-            background: #21262d;
-            padding: 20px;
+        .repo-title {
             display: flex;
             align-items: center;
             gap: 12px;
-            border-bottom: 1px solid #30363d;
+            margin-bottom: 12px;
         }
 
-        .terminal-buttons {
+        .repo-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .repo-visibility {
+            background: var(--bg-tertiary);
+            color: var(--text-muted);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .repo-description {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .repo-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .repo-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 16px 24px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .tab:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: var(--bg-tertiary);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* File Explorer */
+        .file-explorer {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .file-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+
+        .file-name {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .file-item:hover .file-actions {
+            opacity: 1;
+        }
+
+        .file-action {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .file-action:hover {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+        }
+
+        /* Editor */
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .editor-actions {
             display: flex;
             gap: 8px;
         }
 
-        .terminal-button {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
+        .editor {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        .terminal-button.close { background: #ff5f57; }
-        .terminal-button.minimize { background: #ffbd2e; }
-        .terminal-button.maximize { background: #28c940; }
-
-        .terminal-title {
-            color: #8b949e;
-            font-size: 14px;
-            flex: 1;
-            text-align: center;
+        .editor-toolbar {
+            background: var(--bg-tertiary);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 12px;
         }
 
-        .terminal-body {
-            padding: 30px;
+        .editor-content {
+            padding: 0;
+        }
+
+        textarea.code-editor {
+            width: 100%;
+            height: 400px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: none;
+            padding: 16px;
             font-family: 'Courier New', monospace;
-            font-size: 16px;
-            line-height: 1.8;
-            min-height: 300px;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+            outline: none;
         }
 
-        .terminal-line {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .terminal-prompt {
-            color: #58a6ff;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .terminal-command {
-            color: #f0f6fc;
-            flex: 1;
-        }
-
-        .terminal-output {
-            color: #8b949e;
-            margin-left: 40px;
-        }
-
-        .terminal-output.success {
-            color: #3fb950;
-        }
-
-        .terminal-output.error {
-            color: #f85149;
-        }
-
-        /* Footer */
-        footer {
-            border-top: 1px solid #30363d;
-            padding: 60px 0 40px;
-            margin-top: 80px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-        }
-
-        .footer-logo {
-            display: flex;
+        /* Create Repo Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .footer-text {
-            color: #8b949e;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .footer-heading {
-            color: #f0f6fc;
-            font-size: 18px;
+        .modal-title {
+            font-size: 20px;
             font-weight: 600;
-            margin-bottom: 20px;
+            color: var(--text-primary);
         }
 
-        .footer-links {
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 20px;
+            padding: 4px;
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        /* Commits */
+        .commit-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .footer-link {
-            color: #8b949e;
-            text-decoration: none;
-            transition: color 0.3s ease;
+        .commit-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
         }
 
-        .footer-link:hover {
-            color: #58a6ff;
+        .commit-hash {
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-size: 12px;
+            margin-bottom: 4px;
         }
 
-        .footer-bottom {
-            border-top: 1px solid #30363d;
-            padding-top: 30px;
-            margin-top: 40px;
+        .commit-message {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .commit-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            color: #8b949e;
+            padding: 60px 20px;
+            color: var(--text-muted);
         }
 
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .floating {
-            animation: float 6s ease-in-out infinite;
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
 
         /* Responsive */
         @media (max-width: 1024px) {
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
+            .main-content {
+                grid-template-columns: 1fr;
             }
             
-            .hero h1 {
-                font-size: 3rem;
+            .sidebar {
+                position: static;
             }
         }
 
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 20px;
+                gap: 16px;
             }
             
             .nav-links {
-                gap: 16px;
+                gap: 12px;
                 flex-wrap: wrap;
                 justify-content: center;
             }
             
-            .hero h1 {
-                font-size: 2.5rem;
+            .tabs {
+                flex-wrap: wrap;
             }
             
-            .hero p {
-                font-size: 1.2rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
+            .tab {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
             }
         }
     </style>
@@ -501,297 +607,538 @@
         <div class="container">
             <div class="header-content">
                 <a href="#" class="logo">
-                    <svg class="logo-icon" viewBox="0 0 32 32" fill="url(#gitGradient)">
-                        <defs>
-                            <linearGradient id="gitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#F05133"/>
-                                <stop offset="100%" stop-color="#FF7B50"/>
-                            </linearGradient>
-                        </defs>
-                        <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="url(#gitGradient)"/>
+                    <svg class="logo-icon" viewBox="0 0 32 32" fill="#F05133">
+                        <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
                         <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
                     </svg>
                     <span class="logo-text">GitZero</span>
                 </a>
                 
                 <div class="nav-links">
-                    <a href="#" class="nav-link active">Главная</a>
-                    <a href="#" class="nav-link">Документация</a>
-                    <a href="#" class="nav-link">Примеры</a>
-                    <a href="#" class="nav-link">Сообщество</a>
-                    <a href="#" class="nav-link">Блог</a>
+                    <a href="#" class="nav-link active">Репозитории</a>
+                    <a href="#" class="nav-link">Мой код</a>
+                    <a href="#" class="nav-link">Избранное</a>
                 </div>
                 
                 <div class="header-actions">
-                    <button class="btn btn-outline">
+                    <button class="btn btn-primary" id="createRepoBtn">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14.5a6.5 6.5 0 110-13 6.5 6.5 0 010 13zM5 8a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"/>
+                            <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
                         </svg>
-                        Войти
-                    </button>
-                    <button class="btn btn-primary">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 14.5a6.5 6.5 0 110-13 6.5 6.5 0 010 13zM5 8a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"/>
-                        </svg>
-                        Начать бесплатно
+                        Новый репозиторий
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Git в вашем браузере</h1>
-                <p>Мощный веб-интерфейс для работы с Git репозиториями. Управляйте вашими проектами прямо в браузере с помощью знакомых команд.</p>
-                <div class="hero-actions">
-                    <button class="btn btn-primary btn-large">
-                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Мои репозитории</div>
+                    <div class="repo-list" id="repoList">
+                        <!-- Repositories will be added here dynamically -->
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Действия</div>
+                    <button class="btn btn-outline" style="width: 100%; justify-content: center;" id="sidebarCreateRepoBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
                         </svg>
                         Создать репозиторий
                     </button>
-                    <button class="btn btn-outline btn-large">
-                        📚 Изучить документацию
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Repository Header -->
+                <div class="repo-header" id="repoHeader" style="display: none;">
+                    <div class="repo-title">
+                        <h1 class="repo-name" id="currentRepoName">Название репозитория</h1>
+                        <span class="repo-visibility" id="currentRepoVisibility">Public</span>
+                    </div>
+                    <p class="repo-description" id="currentRepoDescription">Описание репозитория</p>
+                    <div class="repo-stats">
+                        <div class="repo-stat">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path fill-rule="evenodd" d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z"/>
+                            </svg>
+                            <span id="repoWatchers">1</span> watchers
+                        </div>
+                        <div class="repo-stat">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                            </svg>
+                            <span id="repoStars">0</span> stars
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-state-icon">📁</div>
+                    <h3>Нет репозиториев</h3>
+                    <p>Создайте свой первый репозиторий чтобы начать работу</p>
+                    <button class="btn btn-primary" style="margin-top: 16px;" id="emptyStateCreateBtn">
+                        Создать репозиторий
                     </button>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Возможности GitZero</h2>
-            <div class="features-grid">
-                <div class="feature-card floating">
-                    <div class="feature-icon">⚡</div>
-                    <h3 class="feature-title">Быстрые операции</h3>
-                    <p class="feature-description">Оптимизированные алгоритмы для мгновенного выполнения Git команд даже с большими репозиториями.</p>
+                <!-- Tabs -->
+                <div class="tabs" id="repoTabs" style="display: none;">
+                    <div class="tab active" data-tab="files">Файлы</div>
+                    <div class="tab" data-tab="commits">Коммиты</div>
+                    <div class="tab" data-tab="branches">Ветки</div>
+                    <div class="tab" data-tab="settings">Настройки</div>
                 </div>
-                
-                <div class="feature-card floating" style="animation-delay: 0.2s;">
-                    <div class="feature-icon">🔒</div>
-                    <h3 class="feature-title">Безопасность</h3>
-                    <p class="feature-description">Шифрование данных и безопасное хранение ключей. Полный контроль над доступом к репозиториям.</p>
-                </div>
-                
-                <div class="feature-card floating" style="animation-delay: 0.4s;">
-                    <div class="feature-icon">🌐</div>
-                    <h3 class="feature-title">Доступность</h3>
-                    <p class="feature-description">Работайте с вашими репозиториями из любого места. Не требует установки дополнительного ПО.</p>
-                </div>
-                
-                <div class="feature-card floating" style="animation-delay: 0.6s;">
-                    <div class="feature-icon">🤝</div>
-                    <h3 class="feature-title">Совместная работа</h3>
-                    <p class="feature-description">Встроенные инструменты для code review, issue tracking и управления проектами.</p>
-                </div>
-                
-                <div class="feature-card floating" style="animation-delay: 0.8s;">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Аналитика</h3>
-                    <p class="feature-description">Детальная статистика по коммитам, веткам и активности разработчиков.</p>
-                </div>
-                
-                <div class="feature-card floating" style="animation-delay: 1s;">
-                    <div class="feature-icon">🚀</div>
-                    <h3 class="feature-title">CI/CD</h3>
-                    <p class="feature-description">Интеграция с системами непрерывной интеграции и доставки.</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="git-demo">
-        <div class="container">
-            <div class="demo-container">
-                <div class="demo-header">
-                    <h2 class="demo-title">Попробуйте GitZero прямо сейчас</h2>
-                    <p class="demo-subtitle">Введите Git команды и увидите результат в реальном времени</p>
-                </div>
-                
-                <div class="terminal">
-                    <div class="terminal-header">
-                        <div class="terminal-buttons">
-                            <div class="terminal-button close"></div>
-                            <div class="terminal-button minimize"></div>
-                            <div class="terminal-button maximize"></div>
-                        </div>
-                        <div class="terminal-title">terminal — gitzero@web — 80×24</div>
-                    </div>
-                    <div class="terminal-body">
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">gitzero@web:~$</span>
-                            <span class="terminal-command">git --version</span>
-                        </div>
-                        <div class="terminal-output success">git version 2.39.1.gitzero</div>
-                        
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">gitzero@web:~$</span>
-                            <span class="terminal-command">git init my-project</span>
-                        </div>
-                        <div class="terminal-output success">Initialized empty Git repository in /home/gitzero/my-project/.git/</div>
-                        
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">gitzero@web:~$</span>
-                            <span class="terminal-command">cd my-project</span>
-                        </div>
-                        
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">gitzero@web:~/my-project$</span>
-                            <span class="terminal-command">git status</span>
-                        </div>
-                        <div class="terminal-output">На ветке main</div>
-                        <div class="terminal-output">Еще нет коммитов</div>
-                        <div class="terminal-output">Нечего коммитить (создайте/скопируйте файлы и используйте "git add" для отслеживания)</div>
-                        
-                        <div class="terminal-line">
-                            <span class="terminal-prompt">gitzero@web:~/my-project$</span>
-                            <span class="terminal-command" id="current-command"></span>
-                        </div>
+                <!-- Tab Contents -->
+                <div class="tab-content active" id="files-tab">
+                    <div class="file-explorer" id="fileExplorer">
+                        <!-- Files will be added here dynamically -->
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <div class="footer-logo">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="#F05133">
-                            <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
-                            <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
-                        </svg>
-                        <span class="logo-text">GitZero</span>
-                    </div>
-                    <p class="footer-text">
-                        Современная платформа для управления Git репозиториями прямо в браузере. 
-                        Бесплатно для открытых проектов, с расширенными возможностями для команд.
-                    </p>
-                </div>
-                
-                <div>
-                    <h3 class="footer-heading">Продукт</h3>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Возможности</a>
-                        <a href="#" class="footer-link">Безопасность</a>
-                        <a href="#" class="footer-link">Цены</a>
-                        <a href="#" class="footer-link">Команда</a>
-                        <a href="#" class="footer-link">Предприятие</a>
+                <div class="tab-content" id="commits-tab">
+                    <div class="commit-list" id="commitList">
+                        <!-- Commits will be added here dynamically -->
                     </div>
                 </div>
-                
-                <div>
-                    <h3 class="footer-heading">Поддержка</h3>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">Помощь</a>
-                        <a href="#" class="footer-link">Сообщество</a>
-                        <a href="#" class="footer-link">Статус</a>
-                        <a href="#" class="footer-link">Контакты</a>
-                        <a href="#" class="footer-link">API</a>
+
+                <div class="tab-content" id="branches-tab">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🌿</div>
+                        <h3>Ветки</h3>
+                        <p>Управление ветками будет доступно в следующей версии</p>
                     </div>
                 </div>
-                
-                <div>
-                    <h3 class="footer-heading">Компания</h3>
-                    <div class="footer-links">
-                        <a href="#" class="footer-link">О нас</a>
-                        <a href="#" class="footer-link">Блог</a>
-                        <a href="#" class="footer-link">Карьера</a>
-                        <a href="#" class="footer-link">Пресса</a>
-                        <a href="#" class="footer-link">Социальные сети</a>
+
+                <div class="tab-content" id="settings-tab">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚙️</div>
+                        <h3>Настройки репозитория</h3>
+                        <p>Настройки будут доступны в следующей версии</p>
                     </div>
                 </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2023 GitZero. Сделано с ❤️ для разработчиков по всему миру.</p>
+
+                <!-- Editor -->
+                <div class="editor-container" id="editorContainer" style="display: none;">
+                    <div class="editor-header">
+                        <div class="editor-title" id="editorTitle">Редактор</div>
+                        <div class="editor-actions">
+                            <button class="btn btn-outline" id="saveFileBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+                                </svg>
+                                Сохранить
+                            </button>
+                            <button class="btn btn-outline" id="closeEditorBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/>
+                                </svg>
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                    <div class="editor">
+                        <div class="editor-toolbar">
+                            <span id="fileNameDisplay">file.txt</span>
+                        </div>
+                        <div class="editor-content">
+                            <textarea class="code-editor" id="codeEditor" placeholder="Введите ваш код здесь..."></textarea>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- Create Repository Modal -->
+    <div class="modal" id="createRepoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Создать новый репозиторий</h2>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="createRepoForm">
+                <div class="form-group">
+                    <label class="form-label" for="repoName">Название репозитория *</label>
+                    <input type="text" class="form-input" id="repoName" required placeholder="my-awesome-project">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="repoDescription">Описание</label>
+                    <textarea class="form-input form-textarea" id="repoDescription" placeholder="Краткое описание вашего проекта"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Видимость</label>
+                    <div style="display: flex; gap: 12px;">
+                        <label style="display: flex; align-items: center; gap: 6px;">
+                            <input type="radio" name="visibility" value="public" checked>
+                            <span>Публичный</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px;">
+                            <input type="radio" name="visibility" value="private">
+                            <span>Приватный</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="initReadme">
+                        <span>Добавить README файл</span>
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancelCreateBtn">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Создать репозиторий</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
-        // Анимация ввода команд в терминале
-        const commands = [
-            'echo "Hello, GitZero!" > README.md',
-            'git add README.md',
-            'git commit -m "Initial commit"',
-            'git log --oneline'
-        ];
-        
-        let currentCommand = 0;
-        let currentChar = 0;
-        const commandElement = document.getElementById('current-command');
-        
-        function typeCommand() {
-            if (currentCommand < commands.length) {
-                if (currentChar < commands[currentCommand].length) {
-                    commandElement.textContent += commands[currentCommand][currentChar];
-                    currentChar++;
-                    setTimeout(typeCommand, 50);
+        // State management
+        let repositories = JSON.parse(localStorage.getItem('gitzero_repositories')) || [];
+        let currentRepo = null;
+        let currentFile = null;
+
+        // DOM Elements
+        const repoList = document.getElementById('repoList');
+        const repoHeader = document.getElementById('repoHeader');
+        const repoTabs = document.getElementById('repoTabs');
+        const emptyState = document.getElementById('emptyState');
+        const fileExplorer = document.getElementById('fileExplorer');
+        const commitList = document.getElementById('commitList');
+        const editorContainer = document.getElementById('editorContainer');
+        const codeEditor = document.getElementById('codeEditor');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const editorTitle = document.getElementById('editorTitle');
+        const createRepoModal = document.getElementById('createRepoModal');
+        const createRepoForm = document.getElementById('createRepoForm');
+
+        // Initialize
+        function init() {
+            renderRepoList();
+            updateUI();
+            
+            // Event listeners
+            document.getElementById('createRepoBtn').addEventListener('click', showCreateModal);
+            document.getElementById('sidebarCreateRepoBtn').addEventListener('click', showCreateModal);
+            document.getElementById('emptyStateCreateBtn').addEventListener('click', showCreateModal);
+            document.getElementById('closeModalBtn').addEventListener('click', hideCreateModal);
+            document.getElementById('cancelCreateBtn').addEventListener('click', hideCreateModal);
+            document.getElementById('saveFileBtn').addEventListener('click', saveFile);
+            document.getElementById('closeEditorBtn').addEventListener('click', closeEditor);
+            
+            createRepoForm.addEventListener('submit', handleCreateRepo);
+            
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+        }
+
+        // Render repository list
+        function renderRepoList() {
+            repoList.innerHTML = '';
+            
+            if (repositories.length === 0) {
+                const emptyItem = document.createElement('div');
+                emptyItem.className = 'repo-item';
+                emptyItem.innerHTML = `
+                    <svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+                    </svg>
+                    <span>Нет репозиториев</span>
+                `;
+                repoList.appendChild(emptyItem);
+                return;
+            }
+            
+            repositories.forEach(repo => {
+                const repoItem = document.createElement('div');
+                repoItem.className = `repo-item ${currentRepo?.id === repo.id ? 'active' : ''}`;
+                repoItem.innerHTML = `
+                    <svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.53.22l2.72 2.72a.75.75 0 01.22.53v8.75A2.5 2.5 0 0114.5 14h-8a.75.75 0 01-.75-.75V2.5z"/>
+                    </svg>
+                    <span>${repo.name}</span>
+                `;
+                repoItem.addEventListener('click', () => selectRepo(repo.id));
+                repoList.appendChild(repoItem);
+            });
+        }
+
+        // Update UI based on state
+        function updateUI() {
+            if (repositories.length === 0) {
+                emptyState.style.display = 'block';
+                repoHeader.style.display = 'none';
+                repoTabs.style.display = 'none';
+                editorContainer.style.display = 'none';
+            } else {
+                emptyState.style.display = 'none';
+                if (currentRepo) {
+                    repoHeader.style.display = 'block';
+                    repoTabs.style.display = 'flex';
+                    
+                    // Update repo header
+                    document.getElementById('currentRepoName').textContent = currentRepo.name;
+                    document.getElementById('currentRepoDescription').textContent = currentRepo.description;
+                    document.getElementById('currentRepoVisibility').textContent = 
+                        currentRepo.visibility === 'public' ? 'Public' : 'Private';
+                    
+                    renderFiles();
+                    renderCommits();
                 } else {
-                    setTimeout(() => {
-                        // Добавляем вывод команды
-                        const terminalBody = document.querySelector('.terminal-body');
-                        const newLine = document.createElement('div');
-                        newLine.className = 'terminal-line';
-                        newLine.innerHTML = `<span class="terminal-prompt">gitzero@web:~/my-project$</span> <span class="terminal-command">${commands[currentCommand]}</span>`;
-                        terminalBody.insertBefore(newLine, commandElement.parentNode);
-                        
-                        // Добавляем вывод
-                        const output = document.createElement('div');
-                        output.className = 'terminal-output success';
-                        
-                        switch(currentCommand) {
-                            case 0:
-                                output.textContent = '';
-                                break;
-                            case 1:
-                                output.textContent = '';
-                                break;
-                            case 2:
-                                output.textContent = '[main (root-commit) a1b2c3d] Initial commit';
-                                break;
-                            case 3:
-                                output.innerHTML = 'a1b2c3d Initial commit';
-                                break;
-                        }
-                        
-                        if (output.textContent) {
-                            terminalBody.insertBefore(output, commandElement.parentNode);
-                        }
-                        
-                        // Очищаем текущую команду и переходим к следующей
-                        commandElement.textContent = '';
-                        currentCommand++;
-                        currentChar = 0;
-                        
-                        // Прокручиваем вниз
-                        terminalBody.scrollTop = terminalBody.scrollHeight;
-                        
-                        if (currentCommand < commands.length) {
-                            setTimeout(typeCommand, 1000);
-                        }
-                    }, 1000);
+                    repoHeader.style.display = 'none';
+                    repoTabs.style.display = 'none';
                 }
             }
         }
-        
-        // Запускаем анимацию после загрузки страницы
-        setTimeout(typeCommand, 2000);
-        
-        // Добавляем интерактивность кнопкам
-        document.querySelectorAll('.btn-primary').forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
+
+        // Select repository
+        function selectRepo(repoId) {
+            currentRepo = repositories.find(repo => repo.id === repoId);
+            renderRepoList();
+            updateUI();
+            closeEditor();
+        }
+
+        // Render files
+        function renderFiles() {
+            if (!currentRepo) return;
+            
+            fileExplorer.innerHTML = '';
+            
+            if (currentRepo.files.length === 0) {
+                const emptyFile = document.createElement('div');
+                emptyFile.className = 'file-item';
+                emptyFile.innerHTML = `
+                    <svg class="file-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
+                    </svg>
+                    <span class="file-name">Нет файлов</span>
+                `;
+                fileExplorer.appendChild(emptyFile);
+                return;
+            }
+            
+            currentRepo.files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <svg class="file-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M3.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h9.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H3.75zm5.75.56v2.19c0 .138.112.25.25.25h2.19L9.5 2.06zM2 1.75C2 .784 2.784 0 3.75 0h5.086c.464 0 .909.184 1.237.513l3.414 3.414c.329.328.513.773.513 1.237v8.086A1.75 1.75 0 0113.25 15h-9.5A1.75 1.75 0 012 13.25V1.75z"/>
+                    </svg>
+                    <span class="file-name">${file.name}</span>
+                    <div class="file-actions">
+                        <button class="file-action edit-file" title="Редактировать">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M11.013 1.427a1.75 1.75 0 012.474 0l1.086 1.086a1.75 1.75 0 010 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 01-.927-.928l.929-3.25c.081-.286.235-.547.445-.758l8.61-8.61zm1.414 1.06a.25.25 0 00-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 000-.354l-1.086-1.086zM11.189 6.25L9.75 4.81l-6.286 6.287a.25.25 0 00-.064.108l-.558 1.953 1.953-.558a.249.249 0 00.108-.064l6.286-6.286z"/>
+                            </svg>
+                        </button>
+                        <button class="file-action delete-file" title="Удалить">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M11 1.75V3h2.25a.75.75 0 010 1.5h-.5v10.5a1.75 1.75 0 01-1.75 1.75h-5.5A1.75 1.75 0 013 15.25V4.5h-.5a.75.75 0 010-1.5H5V1.75C5 .784 5.784 0 6.75 0h2.5C10.216 0 11 .784 11 1.75zM4.496 6.033a.75.75 0 10-1.493.144l.5 5.25a.75.75 0 101.493-.144l-.5-5.25zm6.001 0a.75.75 0 10-1.493-.144l-.5 5.25a.75.75 0 101.493.144l.5-5.25zM8 1.5a.25.25 0 00-.25.25v1.5a.25.25 0 00.5 0v-1.5A.25.25 0 008 1.5zm2 0a.25.25 0 00-.25.25v1.5a.25.25 0 00.5 0v-1.5A.25.25 0 0010 1.5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                
+                fileItem.querySelector('.edit-file').addEventListener('click', () => openFileEditor(file));
+                fileItem.querySelector('.delete-file').addEventListener('click', () => deleteFile(file.name));
+                
+                fileExplorer.appendChild(fileItem);
             });
-        });
+            
+            // Add new file button
+            const newFileItem = document.createElement('div');
+            newFileItem.className = 'file-item';
+            newFileItem.innerHTML = `
+                <svg class="file-icon" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
+                </svg>
+                <span class="file-name">Добавить файл...</span>
+            `;
+            newFileItem.addEventListener('click', addNewFile);
+            fileExplorer.appendChild(newFileItem);
+        }
+
+        // Render commits
+        function renderCommits() {
+            if (!currentRepo) return;
+            
+            commitList.innerHTML = '';
+            
+            if (currentRepo.commits.length === 0) {
+                const emptyCommit = document.createElement('div');
+                emptyCommit.className = 'commit-item';
+                emptyCommit.innerHTML = `
+                    <div class="commit-message">Нет коммитов</div>
+                    <div class="commit-meta">Создайте первый коммит чтобы увидеть историю</div>
+                `;
+                commitList.appendChild(emptyCommit);
+                return;
+            }
+            
+            currentRepo.commits.forEach(commit => {
+                const commitItem = document.createElement('div');
+                commitItem.className = 'commit-item';
+                commitItem.innerHTML = `
+                    <div class="commit-hash">${commit.hash}</div>
+                    <div class="commit-message">${commit.message}</div>
+                    <div class="commit-meta">${commit.author} • ${commit.date}</div>
+                `;
+                commitList.appendChild(commitItem);
+            });
+        }
+
+        // File operations
+        function openFileEditor(file) {
+            currentFile = file;
+            editorTitle.textContent = `Редактирование: ${file.name}`;
+            fileNameDisplay.textContent = file.name;
+            codeEditor.value = file.content;
+            editorContainer.style.display = 'flex';
+        }
+
+        function closeEditor() {
+            editorContainer.style.display = 'none';
+            currentFile = null;
+            codeEditor.value = '';
+        }
+
+        function saveFile() {
+            if (!currentFile || !currentRepo) return;
+            
+            const newContent = codeEditor.value;
+            const fileIndex = currentRepo.files.findIndex(f => f.name === currentFile.name);
+            
+            if (fileIndex !== -1) {
+                currentRepo.files[fileIndex].content = newContent;
+                
+                // Add commit
+                const commit = {
+                    hash: generateHash(),
+                    message: `Update ${currentFile.name}`,
+                    author: 'Current User',
+                    date: new Date().toLocaleString()
+                };
+                currentRepo.commits.unshift(commit);
+                
+                saveRepositories();
+                renderCommits();
+                closeEditor();
+                
+                alert('Файл успешно сохранен!');
+            }
+        }
+
+        function addNewFile() {
+            const fileName = prompt('Введите имя файла:');
+            if (!fileName) return;
+            
+            if (currentRepo.files.some(f => f.name === fileName)) {
+                alert('Файл с таким именем уже существует!');
+                return;
+            }
+            
+            const newFile = {
+                name: fileName,
+                content: ''
+            };
+            
+            currentRepo.files.push(newFile);
+            saveRepositories();
+            renderFiles();
+            openFileEditor(newFile);
+        }
+
+        function deleteFile(fileName) {
+            if (!confirm(`Удалить файл "${fileName}"?`)) return;
+            
+            currentRepo.files = currentRepo.files.filter(f => f.name !== fileName);
+            saveRepositories();
+            renderFiles();
+            
+            if (currentFile && currentFile.name === fileName) {
+                closeEditor();
+            }
+        }
+
+        // Repository operations
+        function showCreateModal() {
+            createRepoModal.classList.add('active');
+        }
+
+        function hideCreateModal() {
+            createRepoModal.classList.remove('active');
+            createRepoForm.reset();
+        }
+
+        function handleCreateRepo(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(createRepoForm);
+            const repoName = document.getElementById('repoName').value;
+            const repoDescription = document.getElementById('repoDescription').value;
+            const visibility = document.querySelector('input[name="visibility"]:checked').value;
+            const initReadme = document.getElementById('initReadme').checked;
+            
+            const newRepo = {
+                id: Date.now().toString(),
+                name: repoName,
+                description: repoDescription,
+                visibility: visibility,
+                files: [],
+                commits: [],
+                created: new Date().toISOString()
+            };
+            
+            if (initReadme) {
+                newRepo.files.push({
+                    name: 'README.md',
+                    content: `# ${repoName}\n\n${repoDescription}\n\n## Описание\n\nЭтот репозиторий был создан в GitZero.`
+                });
+                
+                newRepo.commits.push({
+                    hash: generateHash(),
+                    message: 'Initial commit with README',
+                    author: 'Current User',
+                    date: new Date().toLocaleString()
+                });
+            }
+            
+            repositories.push(newRepo);
+            saveRepositories();
+            hideCreateModal();
+            renderRepoList();
+            selectRepo(newRepo.id);
+        }
+
+        // Utility functions
+        function generateHash() {
+            return Math.random().toString(36).substring(2, 10);
+        }
+
+        function saveRepositories() {
+            localStorage.setItem('gitzero_repositories', JSON.stringify(repositories));
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>

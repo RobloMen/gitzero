@@ -108,6 +108,26 @@
             align-items: center;
         }
 
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f05133, #58a6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
         .btn {
             padding: 10px 20px;
             border-radius: 8px;
@@ -153,6 +173,112 @@
 
         .btn-danger:hover {
             background: #da3633;
+        }
+
+        /* Auth Pages */
+        .auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 40px 0;
+        }
+
+        .auth-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .auth-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-input {
+            padding: 12px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .form-error {
+            color: var(--danger);
+            font-size: 14px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .auth-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
         }
 
         /* Main Layout */
@@ -429,7 +555,7 @@
             outline: none;
         }
 
-        /* Create Repo Modal */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -482,37 +608,6 @@
 
         .modal-close:hover {
             color: var(--text-primary);
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 80px;
         }
 
         .form-actions {
@@ -599,158 +694,281 @@
                 min-width: 120px;
                 text-align: center;
             }
+            
+            .auth-card {
+                padding: 24px;
+                margin: 0 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <a href="#" class="logo">
-                    <svg class="logo-icon" viewBox="0 0 32 32" fill="#F05133">
-                        <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
-                        <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
-                    </svg>
-                    <span class="logo-text">GitZero</span>
-                </a>
-                
-                <div class="nav-links">
-                    <a href="#" class="nav-link active">Репозитории</a>
-                    <a href="#" class="nav-link">Мой код</a>
-                    <a href="#" class="nav-link">Избранное</a>
+    <!-- Auth Screens -->
+    <div id="authScreen">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 32 32" fill="#F05133">
+                            <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
+                            <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
+                        </svg>
+                        <span class="logo-text">GitZero</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Login Form -->
+        <div class="auth-container" id="loginContainer">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <svg width="48" height="48" viewBox="0 0 32 32" fill="#F05133">
+                            <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
+                            <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
+                        </svg>
+                    </div>
+                    <h1 class="auth-title">Вход в GitZero</h1>
+                    <p class="auth-subtitle">Войдите в свой аккаунт чтобы продолжить</p>
                 </div>
                 
-                <div class="header-actions">
-                    <button class="btn btn-primary" id="createRepoBtn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
-                        </svg>
-                        Новый репозиторий
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="loginEmail">Email</label>
+                        <input type="email" class="form-input" id="loginEmail" required placeholder="your@email.com">
+                        <div class="form-error" id="loginEmailError">Введите корректный email</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="loginPassword">Пароль</label>
+                        <input type="password" class="form-input" id="loginPassword" required placeholder="••••••••">
+                        <div class="form-error" id="loginPasswordError">Неверный пароль</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100; justify-content: center;">
+                        Войти
                     </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Нет аккаунта? <a href="#" class="auth-link" id="showRegister">Зарегистрироваться</a></p>
                 </div>
             </div>
         </div>
-    </header>
 
-    <div class="container">
-        <div class="main-content">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-section">
-                    <div class="sidebar-title">Мои репозитории</div>
-                    <div class="repo-list" id="repoList">
-                        <!-- Repositories will be added here dynamically -->
+        <!-- Register Form -->
+        <div class="auth-container" id="registerContainer" style="display: none;">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <svg width="48" height="48" viewBox="0 0 32 32" fill="#F05133">
+                            <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
+                            <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
+                        </svg>
                     </div>
+                    <h1 class="auth-title">Регистрация в GitZero</h1>
+                    <p class="auth-subtitle">Создайте новый аккаунт</p>
                 </div>
                 
-                <div class="sidebar-section">
-                    <div class="sidebar-title">Действия</div>
-                    <button class="btn btn-outline" style="width: 100%; justify-content: center;" id="sidebarCreateRepoBtn">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
-                        </svg>
-                        Создать репозиторий
+                <form class="auth-form" id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label" for="registerName">Имя пользователя</label>
+                        <input type="text" class="form-input" id="registerName" required placeholder="username">
+                        <div class="form-error" id="registerNameError">Имя пользователя уже занято</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="registerEmail">Email</label>
+                        <input type="email" class="form-input" id="registerEmail" required placeholder="your@email.com">
+                        <div class="form-error" id="registerEmailError">Email уже используется</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="registerPassword">Пароль</label>
+                        <input type="password" class="form-input" id="registerPassword" required placeholder="••••••••">
+                        <div class="form-error" id="registerPasswordError">Пароль должен содержать минимум 6 символов</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="registerConfirmPassword">Подтверждение пароля</label>
+                        <input type="password" class="form-input" id="registerConfirmPassword" required placeholder="••••••••">
+                        <div class="form-error" id="registerConfirmError">Пароли не совпадают</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Зарегистрироваться
                     </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Уже есть аккаунт? <a href="#" class="auth-link" id="showLogin">Войти</a></p>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Content Area -->
-            <div class="content-area">
-                <!-- Repository Header -->
-                <div class="repo-header" id="repoHeader" style="display: none;">
-                    <div class="repo-title">
-                        <h1 class="repo-name" id="currentRepoName">Название репозитория</h1>
-                        <span class="repo-visibility" id="currentRepoVisibility">Public</span>
+    <!-- Main App -->
+    <div id="appScreen" style="display: none;">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <svg class="logo-icon" viewBox="0 0 32 32" fill="#F05133">
+                            <path d="M2.585 17.413a2.967 2.967 0 0 1 0-4.186l12.024-12.024a2.965 2.965 0 0 1 4.186 0l12.024 12.024a2.967 2.967 0 0 1 0 4.186l-12.024 12.024a2.965 2.965 0 0 1-4.186 0z" fill="#F05133"/>
+                            <path d="M22.187 9.813l-4.374 4.374c.39.625.624 1.357.624 2.146 0 .789-.234 1.521-.624 2.146l4.374 4.374c.78-.78 1.263-1.858 1.263-3.056s-.483-2.276-1.263-3.056zm-12.374 0c-.78.78-1.263 1.858-1.263 3.056s.483 2.276 1.263 3.056l4.374-4.374c-.39-.625-.624-1.357-.624-2.146 0-.789.234-1.521.624-2.146zm6.187-6.187l-4.374 4.374c.625.39 1.357.624 2.146.624s1.521-.234 2.146-.624zm0 20.748l4.374-4.374c-.625-.39-1.357-.624-2.146-.624s-1.521.234-2.146.624z" fill="#fff"/>
+                        </svg>
+                        <span class="logo-text">GitZero</span>
                     </div>
-                    <p class="repo-description" id="currentRepoDescription">Описание репозитория</p>
-                    <div class="repo-stats">
-                        <div class="repo-stat">
+                    
+                    <div class="nav-links">
+                        <a href="#" class="nav-link active">Репозитории</a>
+                        <a href="#" class="nav-link">Мой код</a>
+                        <a href="#" class="nav-link">Избранное</a>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <div class="user-info">
+                            <div class="user-avatar" id="userAvatar">U</div>
+                            <span id="userName">Пользователь</span>
+                        </div>
+                        <button class="btn btn-outline" id="logoutBtn">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path fill-rule="evenodd" d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z"/>
+                                <path fill-rule="evenodd" d="M2 2.75C2 1.784 2.784 1 3.75 1h2.5a.75.75 0 010 1.5h-2.5a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h2.5a.75.75 0 010 1.5h-2.5A1.75 1.75 0 012 13.25V2.75zm10.44 4.5H6.75a.75.75 0 000 1.5h5.69l-1.97 1.97a.75.75 0 101.06 1.06l3.25-3.25a.75.75 0 000-1.06l-3.25-3.25a.75.75 0 10-1.06 1.06l1.97 1.97z"/>
                             </svg>
-                            <span id="repoWatchers">1</span> watchers
-                        </div>
-                        <div class="repo-stat">
+                            Выйти
+                        </button>
+                        <button class="btn btn-primary" id="createRepoBtn">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                                <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
                             </svg>
-                            <span id="repoStars">0</span> stars
+                            Новый репозиторий
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="main-content">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Мои репозитории</div>
+                        <div class="repo-list" id="repoList">
+                            <!-- Repositories will be added here dynamically -->
                         </div>
                     </div>
-                </div>
-
-                <!-- Empty State -->
-                <div class="empty-state" id="emptyState">
-                    <div class="empty-state-icon">📁</div>
-                    <h3>Нет репозиториев</h3>
-                    <p>Создайте свой первый репозиторий чтобы начать работу</p>
-                    <button class="btn btn-primary" style="margin-top: 16px;" id="emptyStateCreateBtn">
-                        Создать репозиторий
-                    </button>
-                </div>
-
-                <!-- Tabs -->
-                <div class="tabs" id="repoTabs" style="display: none;">
-                    <div class="tab active" data-tab="files">Файлы</div>
-                    <div class="tab" data-tab="commits">Коммиты</div>
-                    <div class="tab" data-tab="branches">Ветки</div>
-                    <div class="tab" data-tab="settings">Настройки</div>
-                </div>
-
-                <!-- Tab Contents -->
-                <div class="tab-content active" id="files-tab">
-                    <div class="file-explorer" id="fileExplorer">
-                        <!-- Files will be added here dynamically -->
+                    
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Действия</div>
+                        <button class="btn btn-outline" style="width: 100%; justify-content: center;" id="sidebarCreateRepoBtn">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
+                            </svg>
+                            Создать репозиторий
+                        </button>
                     </div>
                 </div>
 
-                <div class="tab-content" id="commits-tab">
-                    <div class="commit-list" id="commitList">
-                        <!-- Commits will be added here dynamically -->
-                    </div>
-                </div>
-
-                <div class="tab-content" id="branches-tab">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🌿</div>
-                        <h3>Ветки</h3>
-                        <p>Управление ветками будет доступно в следующей версии</p>
-                    </div>
-                </div>
-
-                <div class="tab-content" id="settings-tab">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">⚙️</div>
-                        <h3>Настройки репозитория</h3>
-                        <p>Настройки будут доступны в следующей версии</p>
-                    </div>
-                </div>
-
-                <!-- Editor -->
-                <div class="editor-container" id="editorContainer" style="display: none;">
-                    <div class="editor-header">
-                        <div class="editor-title" id="editorTitle">Редактор</div>
-                        <div class="editor-actions">
-                            <button class="btn btn-outline" id="saveFileBtn">
+                <!-- Content Area -->
+                <div class="content-area">
+                    <!-- Repository Header -->
+                    <div class="repo-header" id="repoHeader" style="display: none;">
+                        <div class="repo-title">
+                            <h1 class="repo-name" id="currentRepoName">Название репозитория</h1>
+                            <span class="repo-visibility" id="currentRepoVisibility">Public</span>
+                        </div>
+                        <p class="repo-description" id="currentRepoDescription">Описание репозитория</p>
+                        <div class="repo-stats">
+                            <div class="repo-stat">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                    <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+                                    <path fill-rule="evenodd" d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z"/>
                                 </svg>
-                                Сохранить
-                            </button>
-                            <button class="btn btn-outline" id="closeEditorBtn">
+                                <span id="repoWatchers">1</span> watchers
+                            </div>
+                            <div class="repo-stat">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                    <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/>
+                                    <path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
                                 </svg>
-                                Закрыть
-                            </button>
+                                <span id="repoStars">0</span> stars
+                            </div>
                         </div>
                     </div>
-                    <div class="editor">
-                        <div class="editor-toolbar">
-                            <span id="fileNameDisplay">file.txt</span>
+
+                    <!-- Empty State -->
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-state-icon">📁</div>
+                        <h3>Нет репозиториев</h3>
+                        <p>Создайте свой первый репозиторий чтобы начать работу</p>
+                        <button class="btn btn-primary" style="margin-top: 16px;" id="emptyStateCreateBtn">
+                            Создать репозиторий
+                        </button>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs" id="repoTabs" style="display: none;">
+                        <div class="tab active" data-tab="files">Файлы</div>
+                        <div class="tab" data-tab="commits">Коммиты</div>
+                        <div class="tab" data-tab="branches">Ветки</div>
+                        <div class="tab" data-tab="settings">Настройки</div>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-content active" id="files-tab">
+                        <div class="file-explorer" id="fileExplorer">
+                            <!-- Files will be added here dynamically -->
                         </div>
-                        <div class="editor-content">
-                            <textarea class="code-editor" id="codeEditor" placeholder="Введите ваш код здесь..."></textarea>
+                    </div>
+
+                    <div class="tab-content" id="commits-tab">
+                        <div class="commit-list" id="commitList">
+                            <!-- Commits will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="branches-tab">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🌿</div>
+                            <h3>Ветки</h3>
+                            <p>Управление ветками будет доступно в следующей версии</p>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="settings-tab">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">⚙️</div>
+                            <h3>Настройки репозитория</h3>
+                            <p>Настройки будут доступны в следующей версии</p>
+                        </div>
+                    </div>
+
+                    <!-- Editor -->
+                    <div class="editor-container" id="editorContainer" style="display: none;">
+                        <div class="editor-header">
+                            <div class="editor-title" id="editorTitle">Редактор</div>
+                            <div class="editor-actions">
+                                <button class="btn btn-outline" id="saveFileBtn">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+                                    </svg>
+                                    Сохранить
+                                </button>
+                                <button class="btn btn-outline" id="closeEditorBtn">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/>
+                                    </svg>
+                                    Закрыть
+                                </button>
+                            </div>
+                        </div>
+                        <div class="editor">
+                            <div class="editor-toolbar">
+                                <span id="fileNameDisplay">file.txt</span>
+                            </div>
+                            <div class="editor-content">
+                                <textarea class="code-editor" id="codeEditor" placeholder="Введите ваш код здесь..."></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -803,11 +1021,19 @@
 
     <script>
         // State management
+        let currentUser = JSON.parse(localStorage.getItem('gitzero_current_user')) || null;
+        let users = JSON.parse(localStorage.getItem('gitzero_users')) || [];
         let repositories = JSON.parse(localStorage.getItem('gitzero_repositories')) || [];
         let currentRepo = null;
         let currentFile = null;
 
         // DOM Elements
+        const authScreen = document.getElementById('authScreen');
+        const appScreen = document.getElementById('appScreen');
+        const loginContainer = document.getElementById('loginContainer');
+        const registerContainer = document.getElementById('registerContainer');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
         const repoList = document.getElementById('repoList');
         const repoHeader = document.getElementById('repoHeader');
         const repoTabs = document.getElementById('repoTabs');
@@ -820,13 +1046,115 @@
         const editorTitle = document.getElementById('editorTitle');
         const createRepoModal = document.getElementById('createRepoModal');
         const createRepoForm = document.getElementById('createRepoForm');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
 
         // Initialize
         function init() {
-            renderRepoList();
-            updateUI();
+            checkAuth();
+            setupEventListeners();
             
-            // Event listeners
+            if (currentUser) {
+                showApp();
+            } else {
+                showAuth();
+            }
+        }
+
+        // Auth functions
+        function checkAuth() {
+            const savedUser = localStorage.getItem('gitzero_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+        }
+
+        function showAuth() {
+            authScreen.style.display = 'block';
+            appScreen.style.display = 'none';
+        }
+
+        function showApp() {
+            authScreen.style.display = 'none';
+            appScreen.style.display = 'block';
+            
+            // Update user info
+            if (currentUser) {
+                userAvatar.textContent = currentUser.name.charAt(0).toUpperCase();
+                userName.textContent = currentUser.name;
+                
+                // Load user's repositories
+                repositories = JSON.parse(localStorage.getItem(`gitzero_repositories_${currentUser.id}`)) || [];
+                renderRepoList();
+                updateUI();
+            }
+        }
+
+        function login(email, password) {
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('gitzero_current_user', JSON.stringify(user));
+                showApp();
+                return true;
+            }
+            return false;
+        }
+
+        function register(name, email, password) {
+            // Check if user already exists
+            if (users.find(u => u.email === email)) {
+                return { success: false, error: 'Email уже используется' };
+            }
+            
+            if (users.find(u => u.name === name)) {
+                return { success: false, error: 'Имя пользователя уже занято' };
+            }
+            
+            const newUser = {
+                id: Date.now().toString(),
+                name: name,
+                email: email,
+                password: password,
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('gitzero_users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('gitzero_current_user', JSON.stringify(newUser));
+            
+            return { success: true };
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('gitzero_current_user');
+            showAuth();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Auth forms
+            loginForm.addEventListener('submit', handleLogin);
+            registerForm.addEventListener('submit', handleRegister);
+            
+            // Auth navigation
+            document.getElementById('showRegister').addEventListener('click', (e) => {
+                e.preventDefault();
+                loginContainer.style.display = 'none';
+                registerContainer.style.display = 'flex';
+            });
+            
+            document.getElementById('showLogin').addEventListener('click', (e) => {
+                e.preventDefault();
+                registerContainer.style.display = 'none';
+                loginContainer.style.display = 'flex';
+            });
+            
+            // App actions
+            document.getElementById('logoutBtn').addEventListener('click', logout);
             document.getElementById('createRepoBtn').addEventListener('click', showCreateModal);
             document.getElementById('sidebarCreateRepoBtn').addEventListener('click', showCreateModal);
             document.getElementById('emptyStateCreateBtn').addEventListener('click', showCreateModal);
@@ -849,7 +1177,65 @@
             });
         }
 
-        // Render repository list
+        // Auth handlers
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Hide errors
+            document.getElementById('loginEmailError').classList.remove('show');
+            document.getElementById('loginPasswordError').classList.remove('show');
+            
+            if (login(email, password)) {
+                // Success
+                showApp();
+            } else {
+                // Show error
+                document.getElementById('loginPasswordError').classList.add('show');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            // Hide errors
+            document.getElementById('registerNameError').classList.remove('show');
+            document.getElementById('registerEmailError').classList.remove('show');
+            document.getElementById('registerPasswordError').classList.remove('show');
+            document.getElementById('registerConfirmError').classList.remove('show');
+            
+            // Validation
+            if (password.length < 6) {
+                document.getElementById('registerPasswordError').classList.add('show');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                document.getElementById('registerConfirmError').classList.add('show');
+                return;
+            }
+            
+            const result = register(name, email, password);
+            
+            if (result.success) {
+                showApp();
+            } else {
+                if (result.error.includes('Email')) {
+                    document.getElementById('registerEmailError').classList.add('show');
+                } else if (result.error.includes('Имя')) {
+                    document.getElementById('registerNameError').classList.add('show');
+                }
+            }
+        }
+
+        // Repository functions (same as before, but with user-specific storage)
         function renderRepoList() {
             repoList.innerHTML = '';
             
@@ -880,7 +1266,6 @@
             });
         }
 
-        // Update UI based on state
         function updateUI() {
             if (repositories.length === 0) {
                 emptyState.style.display = 'block';
@@ -908,7 +1293,6 @@
             }
         }
 
-        // Select repository
         function selectRepo(repoId) {
             currentRepo = repositories.find(repo => repo.id === repoId);
             renderRepoList();
@@ -916,7 +1300,6 @@
             closeEditor();
         }
 
-        // Render files
         function renderFiles() {
             if (!currentRepo) return;
             
@@ -976,7 +1359,6 @@
             fileExplorer.appendChild(newFileItem);
         }
 
-        // Render commits
         function renderCommits() {
             if (!currentRepo) return;
             
@@ -1033,7 +1415,7 @@
                 const commit = {
                     hash: generateHash(),
                     message: `Update ${currentFile.name}`,
-                    author: 'Current User',
+                    author: currentUser.name,
                     date: new Date().toLocaleString()
                 };
                 currentRepo.commits.unshift(commit);
@@ -1104,7 +1486,8 @@
                 visibility: visibility,
                 files: [],
                 commits: [],
-                created: new Date().toISOString()
+                created: new Date().toISOString(),
+                owner: currentUser.id
             };
             
             if (initReadme) {
@@ -1116,7 +1499,7 @@
                 newRepo.commits.push({
                     hash: generateHash(),
                     message: 'Initial commit with README',
-                    author: 'Current User',
+                    author: currentUser.name,
                     date: new Date().toLocaleString()
                 });
             }
@@ -1134,7 +1517,9 @@
         }
 
         function saveRepositories() {
-            localStorage.setItem('gitzero_repositories', JSON.stringify(repositories));
+            if (currentUser) {
+                localStorage.setItem(`gitzero_repositories_${currentUser.id}`, JSON.stringify(repositories));
+            }
         }
 
         // Initialize the app

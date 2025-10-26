@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitZero - Платформа для разработчиков</title>
+    <title>GitZero - Developer Platform</title>
+    <link rel="icon" href="ZT.jpg">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+        } 
 
         :root {
             --zero-two-pink: #FF2D95;
@@ -27,12 +28,21 @@
             --zero-two-orange: #FFAA00;
         }
 
+        [data-lang="en"] {
+            --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        [data-lang="ru"] {
+            --font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
         body {
             background: linear-gradient(135deg, var(--zero-two-bg) 0%, #16213E 100%);
             color: var(--zero-two-text);
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
+            font-family: var(--font-family);
         }
 
         body::before {
@@ -80,17 +90,12 @@
             text-decoration: none;
         }
 
-        .logo-icon {
+        .logo-image {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, var(--zero-two-pink), var(--zero-two-purple));
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: white;
+            object-fit: cover;
+            border: 2px solid var(--zero-two-pink);
         }
 
         .logo-text {
@@ -144,6 +149,28 @@
             align-items: center;
         }
 
+        .language-switcher {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--zero-two-border);
+            color: var(--zero-two-text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--zero-two-pink);
+            color: white;
+            border-color: var(--zero-two-pink);
+        }
+
         .btn {
             padding: 8px 16px;
             border-radius: 6px;
@@ -179,6 +206,16 @@
             box-shadow: 0 4px 12px rgba(255, 45, 149, 0.3);
         }
 
+        .btn-ai {
+            background: linear-gradient(135deg, var(--zero-two-blue), var(--zero-two-purple));
+            color: white;
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+        }
+
         /* Auth Screens */
         .auth-screen {
             min-height: 100vh;
@@ -209,6 +246,14 @@
             justify-content: center;
             gap: 12px;
             margin-bottom: 20px;
+        }
+
+        .auth-logo-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--zero-two-pink);
         }
 
         .auth-title {
@@ -320,6 +365,14 @@
             font-size: 32px;
             color: white;
             font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .profile-details {
@@ -363,6 +416,374 @@
             font-weight: 600;
         }
 
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: var(--zero-two-card);
+            border-left: 1px solid var(--zero-two-border);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .settings-panel.active {
+            right: 0;
+        }
+
+        .settings-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--zero-two-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--zero-two-text);
+        }
+
+        .settings-close {
+            background: none;
+            border: none;
+            color: var(--zero-two-text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .settings-content {
+            padding: 24px;
+        }
+
+        .settings-section {
+            margin-bottom: 32px;
+        }
+
+        .settings-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--zero-two-text);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--zero-two-border);
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-label {
+            color: var(--zero-two-text);
+            font-size: 14px;
+        }
+
+        .settings-value {
+            color: var(--zero-two-text-secondary);
+            font-size: 14px;
+        }
+
+        .settings-input {
+            background: var(--zero-two-bg);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--zero-two-text);
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .settings-textarea {
+            background: var(--zero-two-bg);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--zero-two-text);
+            font-size: 14px;
+            width: 100%;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .settings-select {
+            background: var(--zero-two-bg);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--zero-two-text);
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--zero-two-border);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--zero-two-pink);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* GitZero Sites */
+        .sites-section {
+            background: var(--zero-two-card);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .site-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .site-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--zero-two-blue);
+        }
+
+        .site-status {
+            background: var(--zero-two-green);
+            color: var(--zero-two-bg);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .site-url {
+            color: var(--zero-two-text-secondary);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .site-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* AI Assistant */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--zero-two-blue), var(--zero-two-purple));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 191, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-toggle img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .ai-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 191, 255, 0.6);
+        }
+
+        .ai-panel {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 400px;
+            height: 500px;
+            background: var(--zero-two-card);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            display: none;
+            flex-direction: column;
+        }
+
+        .ai-panel.active {
+            display: flex;
+        }
+
+        .ai-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--zero-two-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--zero-two-blue), var(--zero-two-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 18px;
+            overflow: hidden;
+        }
+
+        .ai-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ai-info {
+            flex: 1;
+        }
+
+        .ai-name {
+            font-weight: 600;
+            color: var(--zero-two-text);
+        }
+
+        .ai-status {
+            font-size: 12px;
+            color: var(--zero-two-green);
+        }
+
+        .ai-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .ai-message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .ai-message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--zero-two-pink), var(--zero-two-purple));
+            color: white;
+        }
+
+        .ai-message.assistant {
+            align-self: flex-start;
+            background: var(--zero-two-border);
+            color: var(--zero-two-text);
+        }
+
+        .ai-input {
+            padding: 16px;
+            border-top: 1px solid var(--zero-two-border);
+            display: flex;
+            gap: 12px;
+        }
+
+        .ai-input-field {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--zero-two-bg);
+            border: 1px solid var(--zero-two-border);
+            border-radius: 25px;
+            color: var(--zero-two-text);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .ai-input-field:focus {
+            border-color: var(--zero-two-blue);
+        }
+
+        .ai-send-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--zero-two-blue), var(--zero-two-purple));
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-send-btn:hover {
+            transform: scale(1.05);
+        }
+
         /* Repositories */
         .repos-section {
             margin-bottom: 40px;
@@ -370,7 +791,7 @@
 
         .section-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
@@ -394,6 +815,7 @@
             padding: 20px;
             transition: all 0.3s ease;
             cursor: pointer;
+            position: relative;
         }
 
         .repo-card:hover {
@@ -404,7 +826,7 @@
 
         .repo-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 12px;
         }
@@ -450,6 +872,25 @@
             height: 12px;
             border-radius: 50%;
             background: var(--zero-two-pink);
+        }
+
+        .ai-suggest-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 191, 255, 0.1);
+            border: 1px solid var(--zero-two-blue);
+            color: var(--zero-two-blue);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-suggest-btn:hover {
+            background: var(--zero-two-blue);
+            color: white;
         }
 
         /* Activity */
@@ -616,81 +1057,91 @@
             .auth-container {
                 padding: 24px;
             }
+            
+            .ai-panel {
+                width: 350px;
+                right: -50px;
+            }
+            
+            .settings-panel {
+                width: 100%;
+                right: -100%;
+            }
         }
     </style>
 </head>
-<body>
+<body data-lang="ru">
     <!-- Auth Screen -->
     <div id="authScreen" class="auth-screen">
         <div class="auth-container" id="loginContainer">
             <div class="auth-header">
                 <div class="auth-logo">
-                    <div class="logo-icon">GZ</div>
+                    <img src="ZT.jpg" alt="GitZero" class="auth-logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                     <span class="logo-text">GitZero</span>
                 </div>
-                <h1 class="auth-title">Войдите в GitZero</h1>
-                <p class="auth-subtitle">Войдите в свою учетную запись</p>
+                <h1 class="auth-title" data-i18n="auth.login.title">Войдите в GitZero</h1>
+                <p class="auth-subtitle" data-i18n="auth.login.subtitle">С ZeroTwo AI для умной разработки</p>
             </div>
             
             <form class="auth-form" id="loginForm">
                 <div class="form-group">
-                    <label class="form-label" for="loginUsername">Имя пользователя или email</label>
+                    <label class="form-label" for="loginUsername" data-i18n="auth.username">Имя пользователя или email</label>
                     <input type="text" class="form-input" id="loginUsername" required placeholder="username">
-                    <div class="form-error" id="loginUsernameError">Пользователь не найден</div>
+                    <div class="form-error" id="loginUsernameError" data-i18n="auth.errors.userNotFound">Пользователь не найден</div>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label" for="loginPassword">Пароль</label>
+                    <label class="form-label" for="loginPassword" data-i18n="auth.password">Пароль</label>
                     <input type="password" class="form-input" id="loginPassword" required placeholder="••••••••">
-                    <div class="form-error" id="loginPasswordError">Неверный пароль</div>
+                    <div class="form-error" id="loginPasswordError" data-i18n="auth.errors.wrongPassword">Неверный пароль</div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" data-i18n="auth.login.button">
                     Войти
                 </button>
             </form>
             
             <div class="auth-footer">
-                <p>Нет учетной записи? <a href="#" class="auth-link" id="showRegister">Зарегистрироваться</a></p>
+                <p data-i18n="auth.login.noAccount">Нет учетной записи? <a href="#" class="auth-link" id="showRegister" data-i18n="auth.register.link">Зарегистрироваться</a></p>
             </div>
         </div>
 
         <div class="auth-container" id="registerContainer" style="display: none;">
             <div class="auth-header">
                 <div class="auth-logo">
-                    <div class="logo-icon">GZ</div>
+                    <img src="ZT.jpg" alt="GitZero" class="auth-logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                     <span class="logo-text">GitZero</span>
                 </div>
-                <h1 class="auth-title">Создайте аккаунт</h1>
-                <p class="auth-subtitle">Присоединяйтесь к сообществу разработчиков</p>
+                <h1 class="auth-title" data-i18n="auth.register.title">Создайте аккаунт</h1>
+                <p class="auth-subtitle" data-i18n="auth.register.subtitle">С интегрированным ZeroTwo AI помощником</p>
             </div>
             
             <form class="auth-form" id="registerForm">
                 <div class="form-group">
-                    <label class="form-label" for="registerUsername">Имя пользователя</label>
+                    <label class="form-label" for="registerUsername" data-i18n="auth.username">Имя пользователя</label>
                     <input type="text" class="form-input" id="registerUsername" required placeholder="username">
-                    <div class="form-error" id="registerUsernameError">Имя пользователя уже занято</div>
+                    <div class="form-error" id="registerUsernameError" data-i18n="auth.errors.usernameTaken">Имя пользователя уже занято</div>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label" for="registerEmail">Email</label>
+                    <label class="form-label" for="registerEmail" data-i18n="auth.email">Email</label>
                     <input type="email" class="form-input" id="registerEmail" required placeholder="email@example.com">
-                    <div class="form-error" id="registerEmailError">Email уже используется</div>
+                    <div class="form-error" id="registerEmailError" data-i18n="auth.errors.emailUsed">Email уже используется</div>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label" for="registerPassword">Пароль</label>
+                    <label class="form-label" for="registerPassword" data-i18n="auth.password">Пароль</label>
                     <input type="password" class="form-input" id="registerPassword" required placeholder="••••••••">
-                    <div class="form-error" id="registerPasswordError">Пароль должен содержать минимум 8 символов</div>
+                    <div class="form-error" id="registerPasswordError" data-i18n="auth.errors.passwordLength">Пароль должен содержать минимум 8 символов</div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" data-i18n="auth.register.button">
                     Зарегистрироваться
                 </button>
             </form>
             
             <div class="auth-footer">
-                <p>Уже есть аккаунт? <a href="#" class="auth-link" id="showLogin">Войти</a></p>
+                <p data-i18n="auth.register.hasAccount">Уже есть аккаунт? <a href="#" class="auth-link" id="showLogin" data-i18n="auth.login.link">Войти</a></p>
             </div>
         </div>
     </div>
@@ -701,21 +1152,26 @@
             <div class="container">
                 <div class="header-content">
                     <a href="#" class="logo">
-                        <div class="logo-icon">GZ</div>
+                        <img src="ZT.jpg" alt="GitZero" class="logo-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
                         <span class="logo-text">GitZero</span>
                     </a>
                     
                     <div class="nav-links">
-                        <input type="text" class="search-bar" placeholder="Поиск репозиториев...">
-                        <a href="#" class="nav-link">Главная</a>
-                        <a href="#" class="nav-link">Репозитории</a>
-                        <a href="#" class="nav-link">Проекты</a>
-                        <a href="#" class="nav-link">Сообщества</a>
+                        <input type="text" class="search-bar" data-i18n-placeholder="nav.search" placeholder="Поиск репозиториев...">
+                        <a href="#" class="nav-link" data-i18n="nav.home">Главная</a>
+                        <a href="#" class="nav-link" data-i18n="nav.repositories">Репозитории</a>
+                        <a href="#" class="nav-link" data-i18n="nav.projects">Проекты</a>
+                        <a href="#" class="nav-link" id="aiNavLink">ZeroTwo AI</a>
                     </div>
                     
                     <div class="header-actions">
+                        <div class="language-switcher">
+                            <button class="lang-btn" data-lang="en">EN</button>
+                            <button class="lang-btn active" data-lang="ru">RU</button>
+                        </div>
+                        <button class="btn btn-outline" id="settingsBtn" data-i18n="nav.settings">Настройки</button>
                         <div class="user-avatar-small" id="headerAvatar" style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--zero-two-pink), var(--zero-two-purple)); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;"></div>
-                        <button class="btn btn-outline" id="logoutBtn">Выйти</button>
+                        <button class="btn btn-outline" id="logoutBtn" data-i18n="nav.logout">Выйти</button>
                     </div>
                 </div>
             </div>
@@ -726,7 +1182,9 @@
             <div id="dashboardView" class="dashboard">
                 <div class="profile-header">
                     <div class="profile-info">
-                        <div class="avatar" id="userAvatar">U</div>
+                        <div class="avatar" id="userAvatar">
+                            <img src="ZT.jpg" alt="User Avatar" onerror="this.style.display='none'; this.parentElement.innerHTML=this.parentElement.textContent">
+                        </div>
                         <div class="profile-details">
                             <h1 class="profile-name" id="userFullName">Пользователь</h1>
                             <div class="profile-username" id="userUsername">@username</div>
@@ -734,30 +1192,58 @@
                             <div class="profile-stats">
                                 <div class="stat">
                                     <span class="stat-number" id="repoCount">0</span>
-                                    <span>репозиториев</span>
+                                    <span data-i18n="profile.repositories">репозиториев</span>
                                 </div>
                                 <div class="stat">
                                     <span class="stat-number" id="followerCount">0</span>
-                                    <span>подписчиков</span>
+                                    <span data-i18n="profile.followers">подписчиков</span>
                                 </div>
                                 <div class="stat">
                                     <span class="stat-number" id="followingCount">0</span>
-                                    <span>подписок</span>
+                                    <span data-i18n="profile.following">подписок</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- GitZero Sites Section -->
+                <div class="sites-section">
+                    <h2 class="section-title" data-i18n="sites.title">GitZero Sites</h2>
+                    <p style="color: var(--zero-two-text-secondary); margin-bottom: 20px;" data-i18n="sites.description">Статические сайты для ваших проектов</p>
+                    
+                    <div class="site-card">
+                        <div class="site-header">
+                            <div class="site-name" id="userSiteName">username.gitzero.site</div>
+                            <div class="site-status" data-i18n="sites.status.active">Active</div>
+                        </div>
+                        <div class="site-url" id="userSiteUrl">https://username.gitzero.site</div>
+                        <div class="site-actions">
+                            <button class="btn btn-outline" data-i18n="sites.actions.visit">Посетить</button>
+                            <button class="btn btn-primary" data-i18n="sites.actions.configure">Настроить</button>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="createSiteBtn" data-i18n="sites.create">Создать новый сайт</button>
+                </div>
+
                 <div class="repos-section">
                     <div class="section-header">
-                        <h2 class="section-title">Мои репозитории</h2>
-                        <button class="btn btn-primary" id="createRepoBtn">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
-                            </svg>
-                            Новый репозиторий
-                        </button>
+                        <h2 class="section-title" data-i18n="repos.myRepositories">Мои репозитории</h2>
+                        <div>
+                            <button class="btn btn-ai" id="aiHelpBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M9 12h1v1H9v-1zm-1-1h2v2H8v-2zm4-7v7c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h4c1.1 0 2 .9 2 2zM6 4v7h4V4H6z"/>
+                                </svg>
+                                <span data-i18n="ai.help">ZeroTwo AI помощь</span>
+                            </button>
+                            <button class="btn btn-primary" id="createRepoBtn">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M7.75 2a.75.75 0 01.75.75V7h4.25a.75.75 0 110 1.5H8.5v4.25a.75.75 0 11-1.5 0V8.5H2.75a.75.75 0 010-1.5H7V2.75A.75.75 0 017.75 2z"/>
+                                </svg>
+                                <span data-i18n="repos.create">Новый репозиторий</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="repos-grid" id="reposGrid">
                         <!-- Repositories will be populated here -->
@@ -765,7 +1251,7 @@
                 </div>
 
                 <div class="activity-section">
-                    <h2 class="section-title" style="margin-bottom: 20px;">Последняя активность</h2>
+                    <h2 class="section-title" style="margin-bottom: 20px;" data-i18n="activity.recent">Последняя активность</h2>
                     <div class="activity-list" id="activityList">
                         <!-- Activity items will be populated here -->
                     </div>
@@ -776,12 +1262,12 @@
             <div id="repoView" class="repo-view">
                 <div class="repo-nav">
                     <div class="repo-tabs">
-                        <a href="#" class="repo-tab active">Код</a>
-                        <a href="#" class="repo-tab">Issues</a>
-                        <a href="#" class="repo-tab">Pull Requests</a>
-                        <a href="#" class="repo-tab">Actions</a>
-                        <a href="#" class="repo-tab">Projects</a>
-                        <a href="#" class="repo-tab">Settings</a>
+                        <a href="#" class="repo-tab active" data-i18n="repo.tabs.code">Код</a>
+                        <a href="#" class="repo-tab" data-i18n="repo.tabs.issues">Issues</a>
+                        <a href="#" class="repo-tab" data-i18n="repo.tabs.pullRequests">Pull Requests</a>
+                        <a href="#" class="repo-tab" data-i18n="repo.tabs.actions">Actions</a>
+                        <a href="#" class="repo-tab" data-i18n="repo.tabs.projects">Projects</a>
+                        <a href="#" class="repo-tab" data-i18n="repo.tabs.settings">Settings</a>
                     </div>
                     <div>
                         <h1 id="currentRepoName">repository-name</h1>
@@ -796,14 +1282,261 @@
                 </div>
             </div>
         </div>
+
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settingsPanel">
+            <div class="settings-header">
+                <h2 class="settings-title" data-i18n="settings.title">Настройки аккаунта</h2>
+                <button class="settings-close" id="settingsClose">&times;</button>
+            </div>
+            <div class="settings-content">
+                <div class="settings-section">
+                    <h3 class="settings-section-title" data-i18n="settings.profile">Профиль</h3>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.fullName">Полное имя</div>
+                        <input type="text" class="settings-input" id="settingsFullName" value="Пользователь">
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.username">Имя пользователя</div>
+                        <input type="text" class="settings-input" id="settingsUsername" value="username">
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.email">Email</div>
+                        <input type="email" class="settings-input" id="settingsEmail" value="user@example.com">
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.bio">Биография</div>
+                        <textarea class="settings-textarea" id="settingsBio">Разработчик • Люблю open source • Создаю крутые проекты</textarea>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-section-title" data-i18n="settings.preferences">Настройки</h3>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.language">Язык</div>
+                        <select class="settings-select" id="settingsLanguage">
+                            <option value="ru">Русский</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.theme">Темная тема</div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.emailNotifications">Email уведомления</div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 class="settings-section-title" data-i18n="settings.dangerZone">Опасная зона</h3>
+                    <div class="settings-item">
+                        <div class="settings-label" data-i18n="settings.deleteAccount">Удалить аккаунт</div>
+                        <button class="btn btn-outline" data-i18n="settings.delete">Удалить</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" data-i18n="settings.save">Сохранить изменения</button>
+            </div>
+        </div>
+
+        <!-- ZeroTwo AI Assistant -->
+        <div class="ai-assistant">
+            <button class="ai-toggle" id="aiToggle">
+                <img src="ZT.jpg" alt="ZeroTwo AI" onerror="this.style.display='none'; this.parentElement.innerHTML='🤖'">
+            </button>
+            <div class="ai-panel" id="aiPanel">
+                <div class="ai-header">
+                    <div class="ai-avatar">
+                        <img src="ZT.jpg" alt="ZeroTwo AI" onerror="this.style.display='none'; this.parentElement.innerHTML='ZT'">
+                    </div>
+                    <div class="ai-info">
+                        <div class="ai-name">ZeroTwo AI</div>
+                        <div class="ai-status">● Онлайн</div>
+                    </div>
+                </div>
+                <div class="ai-body" id="aiChat">
+                    <div class="ai-message assistant" data-i18n="ai.welcome">
+                        Привет! Я ZeroTwo AI - твой помощник в разработке. Чем могу помочь?
+                    </div>
+                    <div class="ai-message assistant" data-i18n="ai.capabilities">
+                        Я могу помочь с:
+                        • Анализом кода
+                        • Генерацией решений
+                        • Оптимизацией
+                        • Ответами на вопросы
+                    </div>
+                </div>
+                <div class="ai-input">
+                    <input type="text" class="ai-input-field" id="aiInput" data-i18n-placeholder="ai.placeholder" placeholder="Спросите ZeroTwo AI...">
+                    <button class="ai-send-btn" id="aiSendBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M1.5 1.5l12 6-12 6v-12z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Localization data
+        const translations = {
+            'en': {
+                'auth.login.title': 'Sign in to GitZero',
+                'auth.login.subtitle': 'With ZeroTwo AI for smart development',
+                'auth.register.title': 'Create account',
+                'auth.register.subtitle': 'With integrated ZeroTwo AI assistant',
+                'auth.username': 'Username or email',
+                'auth.email': 'Email',
+                'auth.password': 'Password',
+                'auth.login.button': 'Sign in',
+                'auth.register.button': 'Sign up',
+                'auth.login.noAccount': 'No account?',
+                'auth.register.hasAccount': 'Already have an account?',
+                'auth.login.link': 'Sign in',
+                'auth.register.link': 'Sign up',
+                'auth.errors.userNotFound': 'User not found',
+                'auth.errors.wrongPassword': 'Wrong password',
+                'auth.errors.usernameTaken': 'Username already taken',
+                'auth.errors.emailUsed': 'Email already used',
+                'auth.errors.passwordLength': 'Password must be at least 8 characters',
+                
+                'nav.search': 'Search repositories...',
+                'nav.home': 'Home',
+                'nav.repositories': 'Repositories',
+                'nav.projects': 'Projects',
+                'nav.settings': 'Settings',
+                'nav.logout': 'Logout',
+                
+                'profile.repositories': 'repositories',
+                'profile.followers': 'followers',
+                'profile.following': 'following',
+                
+                'sites.title': 'GitZero Sites',
+                'sites.description': 'Static sites for your projects',
+                'sites.status.active': 'Active',
+                'sites.actions.visit': 'Visit',
+                'sites.actions.configure': 'Configure',
+                'sites.create': 'Create new site',
+                
+                'repos.myRepositories': 'My Repositories',
+                'repos.create': 'New repository',
+                
+                'ai.help': 'ZeroTwo AI Help',
+                'ai.welcome': 'Hello! I\'m ZeroTwo AI - your development assistant. How can I help?',
+                'ai.capabilities': 'I can help with:\n• Code analysis\n• Solution generation\n• Optimization\n• Answering questions',
+                'ai.placeholder': 'Ask ZeroTwo AI...',
+                
+                'activity.recent': 'Recent Activity',
+                
+                'repo.tabs.code': 'Code',
+                'repo.tabs.issues': 'Issues',
+                'repo.tabs.pullRequests': 'Pull Requests',
+                'repo.tabs.actions': 'Actions',
+                'repo.tabs.projects': 'Projects',
+                'repo.tabs.settings': 'Settings',
+                
+                'settings.title': 'Account Settings',
+                'settings.profile': 'Profile',
+                'settings.preferences': 'Preferences',
+                'settings.dangerZone': 'Danger Zone',
+                'settings.fullName': 'Full name',
+                'settings.username': 'Username',
+                'settings.email': 'Email',
+                'settings.bio': 'Bio',
+                'settings.language': 'Language',
+                'settings.theme': 'Dark theme',
+                'settings.emailNotifications': 'Email notifications',
+                'settings.deleteAccount': 'Delete account',
+                'settings.delete': 'Delete',
+                'settings.save': 'Save changes'
+            },
+            'ru': {
+                'auth.login.title': 'Войдите в GitZero',
+                'auth.login.subtitle': 'С ZeroTwo AI для умной разработки',
+                'auth.register.title': 'Создайте аккаунт',
+                'auth.register.subtitle': 'С интегрированным ZeroTwo AI помощником',
+                'auth.username': 'Имя пользователя или email',
+                'auth.email': 'Email',
+                'auth.password': 'Пароль',
+                'auth.login.button': 'Войти',
+                'auth.register.button': 'Зарегистрироваться',
+                'auth.login.noAccount': 'Нет учетной записи?',
+                'auth.register.hasAccount': 'Уже есть аккаунт?',
+                'auth.login.link': 'Войти',
+                'auth.register.link': 'Зарегистрироваться',
+                'auth.errors.userNotFound': 'Пользователь не найден',
+                'auth.errors.wrongPassword': 'Неверный пароль',
+                'auth.errors.usernameTaken': 'Имя пользователя уже занято',
+                'auth.errors.emailUsed': 'Email уже используется',
+                'auth.errors.passwordLength': 'Пароль должен содержать минимум 8 символов',
+                
+                'nav.search': 'Поиск репозиториев...',
+                'nav.home': 'Главная',
+                'nav.repositories': 'Репозитории',
+                'nav.projects': 'Проекты',
+                'nav.settings': 'Настройки',
+                'nav.logout': 'Выйти',
+                
+                'profile.repositories': 'репозиториев',
+                'profile.followers': 'подписчиков',
+                'profile.following': 'подписок',
+                
+                'sites.title': 'GitZero Sites',
+                'sites.description': 'Статические сайты для ваших проектов',
+                'sites.status.active': 'Активен',
+                'sites.actions.visit': 'Посетить',
+                'sites.actions.configure': 'Настроить',
+                'sites.create': 'Создать новый сайт',
+                
+                'repos.myRepositories': 'Мои репозитории',
+                'repos.create': 'Новый репозиторий',
+                
+                'ai.help': 'ZeroTwo AI помощь',
+                'ai.welcome': 'Привет! Я ZeroTwo AI - твой помощник в разработке. Чем могу помочь?',
+                'ai.capabilities': 'Я могу помочь с:\n• Анализом кода\n• Генерацией решений\n• Оптимизацией\n• Ответами на вопросы',
+                'ai.placeholder': 'Спросите ZeroTwo AI...',
+                
+                'activity.recent': 'Последняя активность',
+                
+                'repo.tabs.code': 'Код',
+                'repo.tabs.issues': 'Issues',
+                'repo.tabs.pullRequests': 'Pull Requests',
+                'repo.tabs.actions': 'Actions',
+                'repo.tabs.projects': 'Projects',
+                'repo.tabs.settings': 'Settings',
+                
+                'settings.title': 'Настройки аккаунта',
+                'settings.profile': 'Профиль',
+                'settings.preferences': 'Настройки',
+                'settings.dangerZone': 'Опасная зона',
+                'settings.fullName': 'Полное имя',
+                'settings.username': 'Имя пользователя',
+                'settings.email': 'Email',
+                'settings.bio': 'Биография',
+                'settings.language': 'Язык',
+                'settings.theme': 'Темная тема',
+                'settings.emailNotifications': 'Email уведомления',
+                'settings.deleteAccount': 'Удалить аккаунт',
+                'settings.delete': 'Удалить',
+                'settings.save': 'Сохранить изменения'
+            }
+        };
+
         // State management
         let currentUser = JSON.parse(localStorage.getItem('gitzero_current_user')) || null;
         let users = JSON.parse(localStorage.getItem('gitzero_users')) || [];
         let repositories = JSON.parse(localStorage.getItem('gitzero_repositories')) || [];
         let currentRepo = null;
+        let currentLanguage = localStorage.getItem('gitzero_language') || 'ru';
 
         // Sample data for new users
         const sampleRepos = [
@@ -849,6 +1582,17 @@
             }
         ];
 
+        // AI Responses
+        const aiResponses = {
+            'помощь': 'Я могу помочь с анализом кода, генерацией решений, оптимизацией и ответами на вопросы по программированию.',
+            'репозиторий': 'Чтобы создать репозиторий, нажмите кнопку "Новый репозиторий" или используйте команду git init.',
+            'git': 'Git - система контроля версий. Основные команды: git clone, git add, git commit, git push, git pull.',
+            'javascript': 'JavaScript - язык программирования для веб-разработки. Современный стандарт - ES6+. Популярные фреймворки: React, Vue, Angular.',
+            'react': 'React - библиотека для создания пользовательских интерфейсов. Использует компонентный подход и виртуальный DOM.',
+            'ошибка': 'Опишите ошибку подробнее. Укажите язык программирования, код ошибки и контекст.',
+            'оптимизация': 'Для оптимизации кода: минифицируйте файлы, используйте кэширование, оптимизируйте изображения, сократите запросы к базе данных.'
+        };
+
         // DOM Elements
         const authScreen = document.getElementById('authScreen');
         const appScreen = document.getElementById('appScreen');
@@ -861,9 +1605,21 @@
         const reposGrid = document.getElementById('reposGrid');
         const activityList = document.getElementById('activityList');
         const fileExplorer = document.getElementById('fileExplorer');
+        const aiToggle = document.getElementById('aiToggle');
+        const aiPanel = document.getElementById('aiPanel');
+        const aiChat = document.getElementById('aiChat');
+        const aiInput = document.getElementById('aiInput');
+        const aiSendBtn = document.getElementById('aiSendBtn');
+        const aiHelpBtn = document.getElementById('aiHelpBtn');
+        const aiNavLink = document.getElementById('aiNavLink');
+        const settingsBtn = document.getElementById('settingsBtn');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsClose = document.getElementById('settingsClose');
+        const createSiteBtn = document.getElementById('createSiteBtn');
 
         // Initialize
         function init() {
+            setLanguage(currentLanguage);
             checkAuth();
             setupEventListeners();
             
@@ -873,6 +1629,34 @@
             } else {
                 showAuth();
             }
+        }
+
+        // Localization functions
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('gitzero_language', lang);
+            document.body.setAttribute('data-lang', lang);
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+            });
+            
+            // Update all translatable elements
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.setAttribute('placeholder', translations[lang][key]);
+                }
+            });
         }
 
         // Auth functions
@@ -928,7 +1712,12 @@
                 bio: 'Новый пользователь GitZero',
                 createdAt: new Date().toISOString(),
                 repos: [...sampleRepos],
-                activity: [...sampleActivity]
+                activity: [...sampleActivity],
+                site: {
+                    name: `${username}.gitzero.site`,
+                    url: `https://${username}.gitzero.site`,
+                    status: 'active'
+                }
             };
             
             users.push(newUser);
@@ -957,12 +1746,18 @@
         function loadUserData() {
             if (!currentUser) return;
             
-            // Update profile
+            // Update profile with actual user data
             document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
             document.getElementById('headerAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
             document.getElementById('userFullName').textContent = currentUser.fullName;
             document.getElementById('userUsername').textContent = `@${currentUser.username}`;
             document.getElementById('userBio').textContent = currentUser.bio;
+            
+            // Update site information
+            if (currentUser.site) {
+                document.getElementById('userSiteName').textContent = currentUser.site.name;
+                document.getElementById('userSiteUrl').textContent = currentUser.site.url;
+            }
             
             // Load repositories
             const userRepos = JSON.parse(localStorage.getItem(`gitzero_repos_${currentUser.id}`)) || currentUser.repos || [];
@@ -975,6 +1770,13 @@
             
             // Load activity
             renderActivity(currentUser.activity || []);
+            
+            // Update settings form
+            document.getElementById('settingsFullName').value = currentUser.fullName;
+            document.getElementById('settingsUsername').value = currentUser.username;
+            document.getElementById('settingsEmail').value = currentUser.email;
+            document.getElementById('settingsBio').value = currentUser.bio;
+            document.getElementById('settingsLanguage').value = currentLanguage;
         }
 
         // Render repositories
@@ -1009,11 +1811,21 @@
                         <div>⭐ ${repo.stars}</div>
                         <div>🍴 ${repo.forks}</div>
                     </div>
+                    <button class="ai-suggest-btn" data-repo="${repo.name}">AI помощь</button>
                 `;
                 
                 repoCard.querySelector('.repo-name').addEventListener('click', (e) => {
                     e.preventDefault();
                     showRepository(repo.id);
+                });
+                
+                repoCard.querySelector('.ai-suggest-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showAiPanel();
+                    addAiMessage(`Мне нужна помощь с репозиторием ${repo.name}. Что ты можешь предложить?`, 'user');
+                    setTimeout(() => {
+                        addAiMessage(`Для репозитория "${repo.name}" на ${repo.language} я могу помочь с:\n• Анализом архитектуры\n• Оптимизацией кода\n• Настройкой CI/CD\n• Code review`, 'assistant');
+                    }, 1000);
                 });
                 
                 reposGrid.appendChild(repoCard);
@@ -1089,6 +1901,47 @@
             });
         }
 
+        // AI Functions
+        function showAiPanel() {
+            aiPanel.classList.add('active');
+        }
+
+        function hideAiPanel() {
+            aiPanel.classList.remove('active');
+        }
+
+        function addAiMessage(text, sender) {
+            const message = document.createElement('div');
+            message.className = `ai-message ${sender}`;
+            message.textContent = text;
+            aiChat.appendChild(message);
+            aiChat.scrollTop = aiChat.scrollHeight;
+        }
+
+        function processAiMessage(message) {
+            const lowerMessage = message.toLowerCase();
+            let response = 'Извините, я не понял вопрос. Можете переформулировать?';
+            
+            // Check for keywords
+            for (const [keyword, aiResponse] of Object.entries(aiResponses)) {
+                if (lowerMessage.includes(keyword)) {
+                    response = aiResponse;
+                    break;
+                }
+            }
+            
+            // Special responses
+            if (lowerMessage.includes('привет') || lowerMessage.includes('здравствуй')) {
+                response = 'Привет! Я ZeroTwo AI - твой помощник в разработке. Чем могу помочь?';
+            } else if (lowerMessage.includes('спасибо')) {
+                response = 'Пожалуйста! Обращайтесь, если понадобится еще помощь.';
+            } else if (lowerMessage.includes('пока') || lowerMessage.includes('до свидания')) {
+                response = 'До свидания! Удачи в разработке!';
+            }
+            
+            return response;
+        }
+
         // Setup event listeners
         function setupEventListeners() {
             // Auth forms
@@ -1108,9 +1961,77 @@
                 loginContainer.style.display = 'block';
             });
             
+            // Language switcher
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.getAttribute('data-lang');
+                    setLanguage(lang);
+                });
+            });
+            
             // App actions
             document.getElementById('logoutBtn').addEventListener('click', logout);
             document.getElementById('createRepoBtn').addEventListener('click', createNewRepo);
+            document.getElementById('createSiteBtn').addEventListener('click', createNewSite);
+            
+            // Settings
+            settingsBtn.addEventListener('click', () => {
+                settingsPanel.classList.add('active');
+            });
+            
+            settingsClose.addEventListener('click', () => {
+                settingsPanel.classList.remove('active');
+            });
+            
+            // Save settings
+            document.querySelector('#settingsPanel .btn-primary').addEventListener('click', saveSettings);
+            
+            // AI functionality
+            aiToggle.addEventListener('click', () => {
+                aiPanel.classList.toggle('active');
+            });
+            
+            aiSendBtn.addEventListener('click', sendAiMessage);
+            aiInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendAiMessage();
+                }
+            });
+            
+            aiHelpBtn.addEventListener('click', () => {
+                showAiPanel();
+                addAiMessage('Нужна помощь с созданием репозитория или другим вопросом?', 'user');
+                setTimeout(() => {
+                    addAiMessage('Я могу помочь с:\n• Созданием и настройкой репозиториев\n• Git командами\n• Code review\n• Оптимизацией кода\n• Решением ошибок', 'assistant');
+                }, 1000);
+            });
+            
+            aiNavLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAiPanel();
+            });
+            
+            // Close AI panel when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!aiPanel.contains(e.target) && !aiToggle.contains(e.target)) {
+                    hideAiPanel();
+                }
+            });
+        }
+
+        // Send AI message
+        function sendAiMessage() {
+            const message = aiInput.value.trim();
+            if (message) {
+                addAiMessage(message, 'user');
+                aiInput.value = '';
+                
+                // Simulate AI thinking
+                setTimeout(() => {
+                    const response = processAiMessage(message);
+                    addAiMessage(response, 'assistant');
+                }, 1000 + Math.random() * 1000);
+            }
         }
 
         // Auth handlers
@@ -1171,8 +2092,7 @@
             const repoName = prompt('Введите название репозитория:');
             if (!repoName) return;
             
-            const userRepos = JSON.parse(localStorage.getItem(`gitzero_repos_${currentUser.id}`)) || [];
-            
+            const userRepos = JSON.parse(localStorage.getItem(`gitzero_repos_${currentUser.id}`)) || currentUser.repos || [];
             const newRepo = {
                 id: Date.now().toString(),
                 name: repoName,
@@ -1199,11 +2119,47 @@
             currentUser.activity.unshift(newActivity);
             localStorage.setItem('gitzero_current_user', JSON.stringify(currentUser));
             
-            // Update UI
-            loadUserData();
+            renderRepositories(userRepos);
+            renderActivity(currentUser.activity);
+            document.getElementById('repoCount').textContent = userRepos.length;
         }
 
-        // Initialize the app
+        // Create new site
+        function createNewSite() {
+            alert('Функция создания нового сайта будет доступна в следующем обновлении!');
+        }
+
+        // Save settings
+        function saveSettings() {
+            const fullName = document.getElementById('settingsFullName').value;
+            const username = document.getElementById('settingsUsername').value;
+            const email = document.getElementById('settingsEmail').value;
+            const bio = document.getElementById('settingsBio').value;
+            const language = document.getElementById('settingsLanguage').value;
+            
+            // Update user data
+            currentUser.fullName = fullName;
+            currentUser.username = username;
+            currentUser.email = email;
+            currentUser.bio = bio;
+            
+            localStorage.setItem('gitzero_current_user', JSON.stringify(currentUser));
+            
+            // Update language if changed
+            if (language !== currentLanguage) {
+                setLanguage(language);
+            }
+            
+            // Update UI
+            loadUserData();
+            
+            // Close settings
+            settingsPanel.classList.remove('active');
+            
+            alert('Настройки сохранены!');
+        }
+
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
